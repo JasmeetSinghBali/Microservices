@@ -343,7 +343,3 @@
 
       # docker run -d --name -p 8801:80 container1 webservice:latest
       # docker run -d --name -p 8802:80 container2 webservice:latest
-
-
-
-TIMESTAMP->https://www.youtube.com/watch?v=VDdQwUskwKg&list=PLIGDNOJWiL1-svqMFkNEiNdDyhs41Vnib&index=10
