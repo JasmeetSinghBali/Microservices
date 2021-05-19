@@ -23,12 +23,13 @@ RUN npm install
 
 COPY . .
 
-# Since our application is running on localhost:5000 so we expose the container port 5000.
+# Since our application is running on localhost:5000 so we expose the container port 5000, however technically we are just mentioning a type of documentation as the Expose statement do not has any real effect on how docker interact to the outer world.
+# Note that Docker can access outside world but the outside world cannot interact with the docker container this is a by default security mechanism
 
 EXPOSE 5000
 
 # CMD to run when the container is deployed i.e starts/live
 
-CMD ["node", "server.js"]
+CMD ["npm", "run", "dev"]
 
 # finally to build the image 'docker build -t node-app-example .(path to the docker file)
