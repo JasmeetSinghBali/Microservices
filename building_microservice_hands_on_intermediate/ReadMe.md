@@ -1,6 +1,6 @@
 > ## DevOps With Nodejs & Express
 
-timestamp 45
+timestamp 105
 > ## AIM: Setting Up workflow for developing node&express app within a docker container rather than in our local machine environment.
 
 > ### Prerequisite
@@ -129,3 +129,78 @@ timestamp 45
           docker run -v %cd% :/app -p 3000:5000 -d --name node-app-container node-app-example
 
 > ### NOTE- that the node server has to be restarted to see the changes if using node server.js then it will still not show the updates in the browser as the express server has to be restarted again or just use NODEMON also use nodemon -L server.js with L flag to tackle issues of immediate exit of container in windows.
+
+****to run the existing container again****
+
+         docker run -v %cd%:/app -p 3000:5000 -d node-app-container:latest
+
+
+***
+
+> ## Important CASE Preventing Bind Mount Sync For node_modules changes in local and docker volume.
+
+ ****say that we delete node_modules in localsystem and if a bindmount is set up for the docker then the node_modules gets also deleted in docker.****
+
+****To tackle this problem and prevent the delete sync of node_modules in docker when we delete node_modules in local system we use workaround****
+
+         docker run -v %cd%:/app -v /app/node_modules -p 3000:5000 -d --name node-app-container node-app-example
+
+         // the above extra -v will prevent bind mount to syn the node_modules changes.
+
+****NOTE-> the COPY command is still nedded though we are using bind mount only for development in production we dont have bind mount so for that COPY is necessary in Dockerfile.****
+
+         docker exec -it node-app-container bash
+         touch testfile
+         // creates a test file both in docker and our local system project folder.
+
+***
+
+> ## IMPORTANT CASE to restrict the docker volume from changing the src code or add/delete files in our local file system.
+
+****READ ONLY BIND MOUNT i.e the docker can read the changes i.e sync changes from the local file system but the changes in docker volume do not gets reflected back in the local file system.****
+
+          docker run -v %cd%:/app:ro -v /app/node_modules -p 3000:5000 -d --name node-app-container node-app-example
+
+          // :ro specifies read only bind mount
+
+          docker exec-it node-app-container bash
+          touch newfile
+          error:read only file system.
+
+
+> ## Docker and Env Variables
+
+****Inside Dockerfile****
+
+          // creates a ENV variable with key value as PORT 3000
+          ENV PORT 3000
+          EXPOSE $PORT
+
+          // rebuild the Image after change to docker file
+          docker build -t node-app-example .
+          docker run -v %cd%:/app:ro -v /app/node_modules --env PORT=4000 -p 3000:4000 -d --name node-app-container node-app-example
+          // will set the PORT to 4000 rather than default 5000.
+
+          docker exec-it node-app-container bash
+          printenv
+          // to see the env variable PORT of the docker exposed that we set inside DOCKER container.
+
+          // FOR say 20 or so environment variables we can use .env in the root.
+          PORT=4000
+
+          // passing the envirnment file to docker // while docker container run command
+
+          docker run -v %cd%:/app:ro -v /app/node_modules --env-file ./.env -p 3000:4000 -d --name node-app-container node-app-example
+
+****to remove the associatd volume to the container u want to remove****
+          docker volume ls
+
+          // to delete a certain runnning container & its volume with -v flag for voleme and -f for force to remove the running container
+
+          docker rm node-app-container -fv  
+
+          // to remove unused volumes i.e volume not used by any container
+
+          docker volume prune
+
+> ## DOCKER COMPOSE handling multiple containers and microservices running in those different containers.

@@ -26,7 +26,9 @@ COPY . .
 # Since our application is running on localhost:5000 so we expose the container port 5000, however technically we are just mentioning a type of documentation as the Expose statement do not has any real effect on how docker interact to the outer world.
 # Note that Docker can access outside world but the outside world cannot interact with the docker container this is a by default security mechanism
 
-EXPOSE 5000
+# a env variable key(PORT) and value(5000) for the DOCKER container reffered as $PORT now.
+ENV PORT 5000
+EXPOSE $PORT
 
 # CMD to run when the container is deployed i.e starts/live
 
