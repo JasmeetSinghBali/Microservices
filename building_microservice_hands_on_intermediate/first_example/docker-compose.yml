@@ -1,0 +1,14 @@
+version: "3"
+services:
+  node-app:
+    # to automate the docker build command
+    build: .
+    ports:
+      - "3000:4000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - PORT=4000
+    # env_file:
+    #   - ./.env

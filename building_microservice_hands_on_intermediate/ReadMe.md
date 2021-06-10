@@ -1,6 +1,6 @@
 > ## DevOps With Nodejs & Express
 
-timestamp 105
+timestamp 116
 > ## AIM: Setting Up workflow for developing node&express app within a docker container rather than in our local machine environment.
 
 > ### Prerequisite
@@ -203,4 +203,25 @@ timestamp 105
 
           docker volume prune
 
-> ## DOCKER COMPOSE handling multiple containers and microservices running in those different containers.
+> ## DOCKER COMPOSE handling multiple containers and microservices running in those different containers help to automate the docker build,run,stop commands.
+
+****In your root folder make docker-compose.yml****
+****refer: https://docs.docker.com/compose/****
+
+> #### Important Facts docker compose
+
+- [x] each docker container that will run act as services.
+- [x] with yml files spacing matters.
+
+           // to build the image and run the container
+           // for first times
+           docker-compose up -d
+
+           // to stop the container , note u must
+           // specify anonymous volumes it should be
+           // mentioned via -v explicitely
+           docker-compose down -v
+
+
+           // subsequent future it directly runs the ///container
+           docker-compose up -d
