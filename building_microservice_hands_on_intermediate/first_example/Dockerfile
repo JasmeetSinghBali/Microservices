@@ -16,10 +16,17 @@ COPY package.json .
 
 # To finally installed the dependancies in the docker container we can use the RUN cmd
 
-RUN npm install
+#RUN npm install
 
 # Copy rest of our app files from our local dir to the docker workdir /app
 # Copy all the files & folders specified by . from our local dir to the workdir /app specified by .
+
+# It avoids installing dev dependancy for prod environment
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
 
 COPY . .
 
@@ -27,11 +34,11 @@ COPY . .
 # Note that Docker can access outside world but the outside world cannot interact with the docker container this is a by default security mechanism
 
 # a env variable key(PORT) and value(5000) for the DOCKER container reffered as $PORT now.
-ENV PORT 5000
+ENV PORT 3000
 EXPOSE $PORT
 
 # CMD to run when the container is deployed i.e starts/live
 
-CMD ["npm", "run", "dev"]
+CMD ["node", "index.js"]
 
 # finally to build the image 'docker build -t node-app-example .(path to the docker file)

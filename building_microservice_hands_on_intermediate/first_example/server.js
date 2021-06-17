@@ -1,9 +1,9 @@
 const express=require('express'),
       app=express(),
-      PORT=process.env.PORT || 5000;
+      PORT=process.env.PORT || 3000;
 
 app.get('/',(req,res)=>{
-  res.send("<h1>This is a docker compose up!</h1>");
+  res.send("<h1>docker-compose.prod.yml works fine!!</h1>");
 });
 
 app.listen(PORT,process.env.IP,()=>{console.log(`Server Started at ${PORT}`)});

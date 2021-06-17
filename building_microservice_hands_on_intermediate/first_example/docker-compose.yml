@@ -1,14 +1,9 @@
 version: "3"
 services:
   node-app:
-    # to automate the docker build command
     build: .
     ports:
-      - "3000:4000"
-    volumes:
-      - ./:/app
-      - /app/node_modules
+      - "3000:3000"
     environment:
-      - PORT=4000
-    # env_file:
-    #   - ./.env
+      - PORT=3000
+# The above config are common in both dev and prod environment

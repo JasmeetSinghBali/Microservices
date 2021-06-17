@@ -1,0 +1,14 @@
+version: "3"
+services:
+  node-app:
+    build:
+      context: . #specifies location of the docker file
+      args:
+        NODE_ENV:development
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+# the command line overrides the default command of Dockerfile

@@ -1,6 +1,6 @@
 > ## DevOps With Nodejs & Express
 
-timestamp 116
+timestamp 140 stuck at excluding dev dependacy in prod environment
 > ## AIM: Setting Up workflow for developing node&express app within a docker container rather than in our local machine environment.
 
 > ### Prerequisite
@@ -16,12 +16,14 @@ timestamp 116
 
 - [x] Introduction to Docker & Node
 - [x] Working with multiple containers
-- [x] Moving to Production
+- [x] Local Docker setup for developement
+- [x] Docker Setup for Moving to Production
 
-
+=======================================
 > ### Introduction to Docker & Node
 > #### Example -1 (first_example)
 
+=========================================
 > #### Steps
 - [x] Create simple express app.
 - [x] Install docker on your machine.
@@ -40,7 +42,10 @@ timestamp 116
 
 - ****Docker layers are build on one another and the docker caches the result of each layer i.e like say when we run docker build then it will run the cmd FROM and cache it result , then layer-2 WORKDIR and caches that result and so on....****
 
+====================================================
 > #### IMPORTANT Use of the Docker layers and caching!
+
+====================================================
 
 - ****say we want to rebuild our image with set of new layers and instruction now since the docker has already cached the result of the already build layers it will directly use that result instead of rebuilding from layer 1 and will only build the new layer we just added to our docker image.****
 
@@ -66,8 +71,11 @@ timestamp 116
       'docker run -d --name node-app-container node-app-example'
       // -d to run it in detach mode so that our terminal/cli is free it does not binds our cli.
 
+=========================================
 > #### IMPORTANT
 > ## How the Docker Interaction with the outside World(Internet/localmachine) Happens ?
+
+==========================================
 
 - ****Docker can by default talk to the outside world,external machines and the Internet however the external machine or Internet cannot interact with docker****
 
@@ -75,7 +83,11 @@ timestamp 116
 
 - ****In order to allow our Localhost machine/outer world machine to interact with docker we need to poke a hole in our local machine****
 
-> #### PORT mapping
+=======================
+
+> ## PORT mapping
+
+========================
 
 ****-p maps the port so that the docker and externalmachine/localhostmachine/internet can talk to the container****
 
@@ -167,8 +179,11 @@ timestamp 116
           touch newfile
           error:read only file system.
 
+==================================
 
 > ## Docker and Env Variables
+
+==================================
 
 ****Inside Dockerfile****
 
@@ -202,6 +217,11 @@ timestamp 116
           // to remove unused volumes i.e volume not used by any container
 
           docker volume prune
+=======================================
+
+> # DOCKER COMPOSE
+
+=======================================
 
 > ## DOCKER COMPOSE handling multiple containers and microservices running in those different containers help to automate the docker build,run,stop commands.
 
@@ -225,3 +245,54 @@ timestamp 116
 
            // subsequent future it directly runs the ///container
            docker-compose up -d
+
+- [x] IMPORTANT- docker compose is pretty dumb as if we change the Dockerfile content say we made change to the port and run docker-compose up -d it will still run the old image that has the old port.
+
+- [x] note that docker-compose just looks for the already existing image means it is kinda of lazy and do not bothers to crosscheck wheather the initial Dockerfile has undergone any changes.
+
+==================================================
+> ### IMPORTANT So to tackle the problem of docker-compose running stale images even when we had made changes in the original Dockerfile from which image was built.
+
+==================================================
+
+****'--build' flag forces the docker-compose to rebuild the image****
+
+        docker-compose up -d --build
+
+======================================
+
+IMPORTANT
+> # Seperated Docker Set up for Production and Development environments.
+
+****A Single Dockerfile and dockercompose.dev.yml/docker-compose.prod.yml files for productiona and dev environment configurations****
+
+======================================
+
+****Note the orders matters first base file then dev docker-compose.dev.yml****
+
+      // for dev environment
+      docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+      // for production environement
+      // note the changes now made in server.js will
+      // note reflect back as we didnt include
+      //volumes bind mount in prod.yml
+      docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+      // to reflect back changes in the prod //environement the image has to be rebuild each time
+      ocker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+
+====================================
+
+> ## IMPORTANT To avoid dev-dependancie to get installed in our production env
+
+=====================================
+****we modify our Dockerfile with embedded bash script****
+
+        // make sure the spaces are correct
+        //[ "something" ]
+        ARG NODE_ENV
+        RUN if [ "$NODE_ENV" = "development" ]; \
+                then npm install; \
+                else npm install --only=production; \
+                fi

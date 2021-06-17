@@ -1,0 +1,11 @@
+version: "3"
+services:
+  node-app:
+    build:
+      #specifies location of the docker file
+      context: .
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    command: node server.js
