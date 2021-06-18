@@ -5,5 +5,14 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PORT=3000
-# The above config are common in both dev and prod environment
+      - PORT=3000 # from this line above config are common in both dev and prod environment
+  # name of new service can be anything
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=jasmeet
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword
+    volumes:
+      - mongo-db:/data/db # stores the volume with name mongo-db
+volumes:
+  mongo-db:

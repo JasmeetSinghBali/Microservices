@@ -1,6 +1,6 @@
 > ## DevOps With Nodejs & Express
 
-timestamp 140 stuck at excluding dev dependacy in prod environment
+timestamp 207 Creating Custom Networks for container communication.
 > ## AIM: Setting Up workflow for developing node&express app within a docker container rather than in our local machine environment.
 
 > ### Prerequisite
@@ -280,14 +280,16 @@ IMPORTANT
       docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
       // to reflect back changes in the prod //environement the image has to be rebuild each time
-      ocker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+      docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 
 ====================================
 
 > ## IMPORTANT To avoid dev-dependancie to get installed in our production env
+(their is some issue in the bash script in Dockerfile
+debug later)
 
 =====================================
-****we modify our Dockerfile with embedded bash script****
+****we modify our Dockerfile with embedded bash script that excludes dev dependancies if production environment.****
 
         // make sure the spaces are correct
         //[ "something" ]
@@ -296,3 +298,60 @@ IMPORTANT
                 then npm install; \
                 else npm install --only=production; \
                 fi
+
+        docker exec -it containerName bash
+        printenv
+        // will show the environment variables and
+        // production or development environment.
+
+========================================
+
+> ## Adding MongoDB docker container
+
+========================================
+
+****each new service we define like mongoDB , Node goes under the service section in the docker-compose.yml****
+****refer :https://hub.docker.com/_/mongo****
+
+       docker-compose -f docker-compose.yml -f docker-compose.dev.yml -d
+
+       // to enter into the mongo shell Inside
+       // docker container
+       docker exec -it mongo_container mongo -u "databaseusername" -p "password"
+
+
+
+==============================================
+
+> ## Handling The Issue of Fresh Database set every time
+we start the mongo container with docker-compose up
+
+==============================================
+
+****In order to presist the state of the Database when we run the docker-compose up next time we use named volumes  docker-compose.yml and the mongo section inside it.****
+
+               volumes:
+                  - mongo-db:/data/db # stores the volume with name mongo-db
+            volumes:
+            mongo-db:
+
+****NOTE-> now when you use docker-compose down dont include the -v flag as it will also delete the named volume including the mongo-db one.****
+
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml down
+
+          // to clean out all unecessary volumes
+          //run prune when u have already run
+          //docker-compose up so that the in use //container,volume do net gets deleted in //the prune process.
+
+          docker volume prune
+
+          // make sure your rebuild image if new package installed.
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+=========================================
+
+> Custom networks to make the containers talk to each other.
+
+==========================================
+
+****Consider the case where we have to lookup for the IP address of the mongo container via docker inspect to mention it in the server.js to avoid this we can instead make use of custom networks that helps communication between containers.****

@@ -4,10 +4,10 @@ services:
     build:
       context: . #specifies location of the docker file
       args:
-        NODE_ENV:development
+        NODE_ENV: development
     volumes:
-      - ./:/app
-      - /app/node_modules
+      - ./:/app # bind mount that presist data between our local machine  and docker container /pathtolocalmachine:/pathtodockercontainer
+      - /app/node_modules # anonymous volumes creates long string named that is not a good way to assign volumes especially for the database /pathtocontainerdirectory
     environment:
       - NODE_ENV=development
     command: npm run dev
