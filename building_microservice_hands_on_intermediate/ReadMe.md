@@ -1,6 +1,6 @@
 > ## DevOps With Nodejs & Express
 
-timestamp 207 Creating Custom Networks for container communication.
+timestamp 23335 start building your node blog app in docker.
 > ## AIM: Setting Up workflow for developing node&express app within a docker container rather than in our local machine environment.
 
 > ### Prerequisite
@@ -346,12 +346,123 @@ we start the mongo container with docker-compose up
           docker volume prune
 
           // make sure your rebuild image if new package installed.
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+
+          docker inspect node-container-address
+          //under network we can see the default network created by docker-compose so all the containers can talk to each other with this network.
+
+          docker inspect mongo-container-address
+          //under network we have the IP address of the mongo container we want to grab this IP address to connect our node app and place in the mongo url in server.js.
+
+          docker logs node-container-address
+          // we will see the message that we connected to mongodb.
 
 =========================================
 
-> Custom networks to make the containers talk to each other.
+> # Custom networks to make the containers talk to each other.
 
 ==========================================
 
+            docker network ls
+            //shows network host and bridge are default you will also see one with the name of your 'rootdirname_default' via which the two container are talking.
+
 ****Consider the case where we have to lookup for the IP address of the mongo container via docker inspect to mention it in the server.js to avoid this we can instead make use of custom networks that helps communication between containers.****
+
+****So when we want one container/service to tak to another service/container we can do that by DNS i.e just by providing the name of the service we want to talk to****
+
+****Example in the case we can talk to mongodb container by reffering to mongo so just mention mongo instead of IP address in server.js where u specified mongodb url****
+
+           docker logs node_app_name -f
+           // to follow i.e see the running container logs realtime
+
+           docker exec -it first_example_node-app_1 bash
+           #ping mongo
+           // and you can access mongo container from the node container via DNS i.e specifiying the name of the service mongo in ther server.js file.
+
+> ## IMPORTANT IN short you just need the service name to talk to it via other container as DNS is built inside of docker but note that it is only applicable on the network we create not on the bridge or host default networks.
+
+          docker network inspect first_example_default
+
+          //to see the container and gateway,subnet and other information on your network.
+
+
+****Make sure to rebuild containers if you change your environment variables****
+
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml down
+
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+          docker logs first_example_node-app_1 -f
+
+
+
+=========================================
+
+> # Order Of Spinning Up Containers
+> ## To Tell Docker to spin up the mongo container first as if node container spins up first while mongo is not running it can lead to issues
+
+==========================================
+
+****depends_on in yaml****
+
+            // so in docker-compose.yaml in node_app
+            depends_on:
+              - mongo
+            // this means that since node app container depends on the mongo container so mongo container will start up first when we do a docker-compose.
+
+
+****now tear down adn start up the docker-containers again via docker-compose up -d you will se  that mongo starts first then node_app starts****
+
+Creating first_example_mongo_1 ... done
+Creating first_example_node-app_1 ... done
+
+
+****To only start up a specific service with docker compose****
+
+            docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d specific_service_name/node-app
+
+****but this will start the mongo also due to depends_on*****
+
+
+****To tackle this we use --no-deps it means dont start linked services****
+
+            docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --help
+
+            docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --no-deps node-app
+
+            // only starts the node container
+
+            docker logs first_example_node-app_1 -f
+
+            // you will see that this keeps going on after 5 seconds
+            MongooseServerSelectionError: connection timed out
+            at NativeConnection.Connection.openUri (/app/node_modules/mongoose/lib/connection.js:846:32)
+            at /app/node_modules/mongoose/lib/index.js:351:10
+            at /app/node_modules/mongoose/lib/helpers/promiseOrCallback.js:32:5
+            at new Promise (<anonymous>)
+            at promiseOrCallback (/app/node_modules/mongoose/lib/helpers/promiseOrCallback.js:31:10)
+            at Mongoose._promiseOrCallback (/app/node_modules/mongoose/lib/index.js:1149:10)
+            at Mongoose.connect (/app/node_modules/mongoose/lib/index.js:350:20)
+            at Timeout.connectWithRetry [as _onTimeout] (/app/server.js:14:12)
+            at listOnTimeout (node:internal/timers:557:17)
+            at processTimers (node:internal/timers:500:7) {
+          reason: TopologyDescription {
+            type: 'Single',
+            setName: null,
+            maxSetVersion: null,
+            maxElectionId: null,
+            servers: Map(1) { 'mongo:27017' => [ServerDescription] },
+            stale: false,
+            compatible: true,
+            compatibilityError: null,
+            logicalSessionTimeoutMinutes: null,
+            heartbeatFrequencyMS: 10000,
+            localThresholdMS: 15,
+            commonWireVersion: null
+          }
+        }
+
+
+****Finally run the mongo to remove this error****
+
+            docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d mongo

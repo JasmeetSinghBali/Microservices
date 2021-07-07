@@ -10,5 +10,12 @@ services:
       - /app/node_modules # anonymous volumes creates long string named that is not a good way to assign volumes especially for the database /pathtocontainerdirectory
     environment:
       - NODE_ENV=development
+      - MONGO_USER=jasmeet
+      - MONGO_PASS=mypassword
+      
     command: npm run dev
+  mongo:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=jasmeet
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword
 # the command line overrides the default command of Dockerfile
