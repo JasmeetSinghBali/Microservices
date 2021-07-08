@@ -1,7 +1,22 @@
-> ## DevOps With Nodejs & Express
+> ## DevOps With Nodejs + Express + MONGO(CRUD) + REDIS(Auth)
+timestamp 307 handling sessions with express-sessions.
 
-timestamp 23335 start building your node blog app in docker.
-> ## AIM: Setting Up workflow for developing node&express app within a docker container rather than in our local machine environment.
+> ## AIM: Setting Up workflow for developing node&express app within a docker container.
+****Note- Each time you add new dependency or change environment variable do docker-compose down then up --build****
+
+> # Blueprint
+****NODE POST API + MONGO(CRUD) + REDIS(AUTH)****
+- [x] Docker Prod & Dev environment
+- [x] CRUD with mongoDB & Login
+- [ ] Auth with Session & redis
+
+> ## Topics Covered
+
+- [x] Introduction to Docker & Node
+- [x] Working with multiple containers
+- [x] Local Docker setup for developement
+- [x] Docker Setup for Moving to Production
+
 
 > ### Prerequisite
 - [x] javascript
@@ -10,14 +25,7 @@ timestamp 23335 start building your node blog app in docker.
 - [x] Knowledge about web apps/REST
 - [x] Databases nosql/sql
 
-> ## Level : Intermediate
 
-> ## Topics Covered
-
-- [x] Introduction to Docker & Node
-- [x] Working with multiple containers
-- [x] Local Docker setup for developement
-- [x] Docker Setup for Moving to Production
 
 =======================================
 > ### Introduction to Docker & Node
