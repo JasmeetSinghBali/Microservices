@@ -1,14 +1,18 @@
 > ## DevOps With Nodejs + Express + MONGO(CRUD) + REDIS(Auth)
-timestamp 307 handling sessions with express-sessions.
+timestamp 334 
 
-> ## AIM: Setting Up workflow for developing node&express app within a docker container.
-****Note- Each time you add new dependency or change environment variable do docker-compose down then up --build****
+> ## AIM: Setting up workflow for developing node&express app within a docker container and understanding how production works with containerize applications i.e to deploy as different microservices.
+
+
 
 > # Blueprint
 ****NODE POST API + MONGO(CRUD) + REDIS(AUTH)****
-- [x] Docker Prod & Dev environment
+- [x] Docker setup for Prod & Dev environment
 - [x] CRUD with mongoDB & Login
-- [ ] Auth with Session & redis
+- [x] Auth with express-session & connect-redis https://www.npmjs.com/package/connect-redis
+
+****Note-1 - Each time you add new dependency or change environment variable do docker-compose down then up --build,also when changing in the docker-compose file then rerun the docker-compose up it will automatically detect changes.****
+****Note-2 - Remember we can also do docker up directly when we add new dependency but it will have to make sure to pass --build and -V flag to create a new anonymous volume so that the old information from the container volume is not retrieved. example docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build -V****
 
 > ## Topics Covered
 
@@ -474,3 +478,36 @@ Creating first_example_node-app_1 ... done
 ****Finally run the mongo to remove this error****
 
             docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d mongo
+
+++++++++++++++++++++++++++++++++++++++
+
+> ## Interacting with redis Microservice Container CLI
+
+++++++++++++++++++++++++++++++++++++++
+
+          docker exec -it redis_container redis-cli
+
+- [x] 'KEYS *' to see all the entries in the database
+- [x] hit the login route and then rerun KEYS * to see the cookie.
+- [x] GET the details of the cookie via GET "key"
+
+          127.0.0.1:6379> KEYS *
+          1) "sess:ZKsYOvtlGJ-6KvtpojZCX2dMwtyU3TdH"
+          127.0.0.1:6379> GET "sess:ZKsYOvtlGJ-6KvtpojZCX2dMwtyU3TdH"
+          "{\"cookie\":{\"originalMaxAge\":30000,\"expires\":\"2021-07-09T13:09:16.137Z\",\"secure\":false,\"httpOnly\":true,\"path\":\"/\"}}"
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+> ## Session & Cookies
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+- [x] Remember that http is naturally a stateless protocol it is the session and the cookies that make it statefull. consider example of the starbucks that provide you a card this is the cookie that is sent each time you request for a resource from the server and then this card/cookie is checked with some specific data with in the server so as to identify and isolate and assign a particular session to that user so that next time you visit it just saves your early prefferences.
+
+- [x] cookie are always handled client side while the session sometimes but not always server side.
+- [x] advantage of having session at client side is that it optimizes the response time as if we maintained session in server the cookie is first checked against some data on the server side and then starts/enable the session but a downside is the space as if we have to store fancy data like shoopping cart preferneces and it do not fits on client side then we have to eventually switch to server side.
+
+        // at the server we assigned a user key with users username and password once the server logic checks the password
+        127.0.0.1:6379> GET "sess:Ut1pbjxwEViTEIJjV2qAE8O6MymyS2RI"
+        "{\"cookie\":{\"originalMaxAge\":30000,\"expires\":\"2021-07-09T13:34:33.929Z\",\"secure\":false,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"_id\":\"60e84767fc29af0064da84d0\",\"username\":\"john\",\"password\":\"$2a$12$r.ydgZxuTeSCQUAag.NCWOB9ncF3aZ6M49NwSjw7Wt0fI7.z8Tdaa\",\"__v\":0}}"

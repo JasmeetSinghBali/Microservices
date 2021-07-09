@@ -12,7 +12,8 @@ services:
       - NODE_ENV=development
       - MONGO_USER=jasmeet
       - MONGO_PASS=mypassword
-      
+      - SESSION_SECRET=mysupersecretSTRING
+
     command: npm run dev
   mongo:
     environment:
