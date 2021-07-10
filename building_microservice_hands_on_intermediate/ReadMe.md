@@ -1,5 +1,5 @@
 > ## DevOps With Nodejs + Express + MONGO(CRUD) + REDIS(Auth)
-timestamp 334 
+timestamp 350:35 Load balancing with nginx proxy container
 
 > ## AIM: Setting up workflow for developing node&express app within a docker container and understanding how production works with containerize applications i.e to deploy as different microservices.
 
@@ -511,3 +511,34 @@ Creating first_example_node-app_1 ... done
         // at the server we assigned a user key with users username and password once the server logic checks the password
         127.0.0.1:6379> GET "sess:Ut1pbjxwEViTEIJjV2qAE8O6MymyS2RI"
         "{\"cookie\":{\"originalMaxAge\":30000,\"expires\":\"2021-07-09T13:34:33.929Z\",\"secure\":false,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"_id\":\"60e84767fc29af0064da84d0\",\"username\":\"john\",\"password\":\"$2a$12$r.ydgZxuTeSCQUAag.NCWOB9ncF3aZ6M49NwSjw7Wt0fI7.z8Tdaa\",\"__v\":0}}"
+
+> ## Docker nature of  security
+- [x] In the first_example the outside port 3000 is mapped to the server 3000 express container and then the express is talking to our mongoDB so their is no way that someone can directly interact with the mongo database contianer.
+
+==============================
+
+> ## Scaling via Docker & Adding Nginx Container as middleware between the outside world and express containers.
+
+==============================
+
+****We spin up another node express container that can interact with mongo container with the same internal port as 3000 while the external port 3001 via which  the outer world can interact with this new spin up node container****
+
+- [x] first step is to expose a port 3001 via which outside world can interact with the node express container.
+
+- [x] ****Refer default.conf****
+
+            server{
+              listen 80;
+
+              location / {
+                  // to catch the origin IP who make the request to the nginx further rate limiting or IP blacklisting could be done.
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_pass http://node-app:3000;
+              }
+            }
+
+- [x] To link default.conf with the nginx we use bind mount.other way could be making a custom image but it is too hectic.
+
+          3000 or external port--> port 80--> nginx 3000---> express1
+                                                          |          |-> 27017 ->Mongo
+                                                          |-> express2
