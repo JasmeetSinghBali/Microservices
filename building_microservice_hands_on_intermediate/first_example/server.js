@@ -8,6 +8,7 @@ const {MONGO_USER,MONGO_PASS,MONGO_IP,MONGO_PORT,REDIS_URL,REDIS_PORT,SESSION_SE
 // redis config
 const session = require('express-session');
 const redis = require('redis');
+const cors = require('cors');
 let RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient({
   host : REDIS_URL,
@@ -40,6 +41,11 @@ const connectWithRetry = () =>{
 
 connectWithRetry();
 
+// This lines bascially tells the server to trust the nginx to add certain things to header
+// It can be used to access the IP address of the client making the request can be used for rate limiting
+app.enable('trust proxy');
+
+app.use(cors({}));
 
 //session middleware
 app.use(session({
@@ -58,6 +64,7 @@ app.use(express.json());
 
 app.get('/api/v1',(req,res)=>{
   res.send("<h1>Inside Docker Development✨✨</h1>");
+  console.log('Yes, Scaled Up 🎈🎈 by adding a new node container!!');
 });
 
 app.use("/api/v1/posts",postRouter);

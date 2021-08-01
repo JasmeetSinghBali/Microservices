@@ -1,5 +1,5 @@
 > ## DevOps With Nodejs + Express + MONGO(CRUD) + REDIS(Auth)
-timestamp 350:35 Load balancing with nginx proxy container
+timestamp 357:49 Load balancing with nginx proxy container and scaling (adding new node container done next to work on production.)
 
 > ## AIM: Setting up workflow for developing node&express app within a docker container and understanding how production works with containerize applications i.e to deploy as different microservices.
 
@@ -525,7 +525,7 @@ Creating first_example_node-app_1 ... done
 
 - [x] first step is to expose a port 3001 via which outside world can interact with the node express container.
 
-- [x] ****Refer default.conf****
+- [x] ****Refer default.conf in nginx folder****
 
             server{
               listen 80;
@@ -542,3 +542,34 @@ Creating first_example_node-app_1 ... done
           3000 or external port--> port 80--> nginx 3000---> express1
                                                           |          |-> 27017 ->Mongo
                                                           |-> express2
+
+===========================================
+
+Express Behind Proxies
+https://expressjs.com/en/guide/behind-proxies.html
+
+app.enable("trust proxy"); in server.js
+===========================================
+
+
+=======================================
+
+Scaling Up like Adding New node Container
+
+=======================================
+
+      docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale node-app=2
+
+
+      // we can check the docker logs for the two node container to determine wheather nginx is load balancing the incoming requests i.e the first request will go to node container 1 and then the second one to node container 2.
+
+      docker logs containername -f
+
+======================
+Skipping step down & directly build and Anonymous volume creation via --build and -V on already running containers when new package is installed.
+
+=====================
+
+NOTE- whenever adding new package to already running containers make sure to pass -V and rebuild the V flag make sure to recreate the anonymous volume that will contain the newly installed package.
+
+      docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build -V
