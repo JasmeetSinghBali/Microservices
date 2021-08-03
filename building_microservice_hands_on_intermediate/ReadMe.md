@@ -1,5 +1,4 @@
 > ## DevOps With Nodejs + Express + MONGO(CRUD) + REDIS(Auth)
-timestamp 357:49 Load balancing with nginx proxy container and scaling (adding new node container done next to work on production.)
 
 > ## AIM: Setting up workflow for developing node&express app within a docker container and understanding how production works with containerize applications i.e to deploy as different microservices.
 
@@ -545,7 +544,7 @@ Creating first_example_node-app_1 ... done
 
 ===========================================
 
-Express Behind Proxies
+## Express Behind Proxies
 https://expressjs.com/en/guide/behind-proxies.html
 
 app.enable("trust proxy"); in server.js
@@ -554,7 +553,7 @@ app.enable("trust proxy"); in server.js
 
 =======================================
 
-Scaling Up like Adding New node Container
+# Scaling Up like Adding New node Container
 
 =======================================
 
@@ -565,11 +564,125 @@ Scaling Up like Adding New node Container
 
       docker logs containername -f
 
-======================
-Skipping step down & directly build and Anonymous volume creation via --build and -V on already running containers when new package is installed.
+==========================================
 
-=====================
+****Skipping step down & directly build and Anonymous volume creation via --build and -V on already running containers when new package is installed.****
 
-NOTE- whenever adding new package to already running containers make sure to pass -V and rebuild the V flag make sure to recreate the anonymous volume that will contain the newly installed package.
+
+
+****NOTE- whenever adding new package to already running containers make sure to pass -V and rebuild the V flag make sure to recreate the anonymous volume that will contain the newly installed package.****
 
       docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build -V
+
+============================================
+
+
+=========================================
+
+# Production
+
+****make sure to set up a ubuntu server****
+
+GCP/AWS/Digital Ocean or Local Machine.
+=========================================
+
+Follow the steps once you have your VM instance set up
+
+1.) Grab the public IP address.
+2.)In the terminal of your local machine.
+
+        ssh root@IPaddress
+        Yes
+        enter password for VM
+
+3.) Install docker into ubuntu VM
+
+        https://get.docker.com/
+        go to get.docker.com
+        copy the curl command
+        curl -fsSL https://get.docker.com -o get-docker.sh
+
+4.) run this curl command in terminal connected to your ubuntu vm
+5.) now run the script get-docker.sh that we got when we ran the curl command.
+
+        sh get-docker.sh
+
+6.) Verify docker --version that your ubuntu VM has now docker installed.
+
+7.)Install docker compose https://docs.docker.com/compose/install/
+
+        // 1st command
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+        // 2nd command
+        sudo chmod +x /usr/local/bin/docker-compose
+
+8.)Verify docker-compose -v
+
+9.) Mkae sure you have a git repo holding your application code.
+
+10.) COnfigure docker-compose.prod.yml for production environemnt.
+
+
+****We have to make sure that environment variables we use in production environment are grabbed from the Ubuntu VM host machine that has docker installed on it.****
+
+Modify ****docker-compose.prod.yml****
+
+11.) Set up environment variable on a linux machine
+
+        export SESSION_SECRET="mysecretSessionKey"
+        printenv
+        // printenv shows all the env variables
+
+****Instead of setting one by one the environment variables we can create a environmnet variables files make sure to make this file far away from application code so that we do not push the environment variables to git repo****
+
+        vi .env
+
+        // inside the vi .env file
+        NODE_ENV=production
+        MONGO_USER=jasmeet
+        MONGO_PASS=mypassword
+        SESSION_SECRET=mysupersecretSTRING
+        MONGO_INITDB_ROOT_USERNAME=jasmeet
+        MONGO_INITDB_ROOT_PASSWORD=mypassword
+
+        // navigate to your oort of the Ubuntu VM
+        ls -la
+        // open the .profile
+        vi .profile
+        // go to the bootom of the file .profile
+        // add config for the env file we just created
+
+        set -o allexport; source /root/.env; set +o allexport;
+
+        // the above command will loop through all the environment variables and then set on this machine.
+        :wq
+
+12.) Make sure to exit out of the ssh session and set up the session again to make the .profile config in effect.
+
+        exit
+        ssh root@IP
+        type password
+
+        printenv
+        // you will see all the enviornmnet variables that we specified in .env file in ubuntu VM.
+
+13.) Make a folder in the Ubuntu VM server to hold our application code.
+
+        mkdir app
+        cd app
+        git clone app/url/git.com
+
+14.) Run the docker-compose in the production server i.e Ubuntu VM instance.
+
+        docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+        docker ps
+
+15.) Make the postman request to our ubuntu VM server IP.
+
+since we have mentioned port 80 it is the defualt no need to specify port 80.
+
+          http://ubuntuVMIP/api/v1
+
+****timestamp 4:18 make the request via postman to the server(ubuntu VM) IP to crosscheck we didnt break anything.****
