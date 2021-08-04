@@ -636,7 +636,7 @@ Modify ****docker-compose.prod.yml****
 
 ****Instead of setting one by one the environment variables we can create a environmnet variables files make sure to make this file far away from application code so that we do not push the environment variables to git repo****
 
-        vi .env
+        sudo vi .env
 
         // inside the vi .env file
         NODE_ENV=production
@@ -646,13 +646,22 @@ Modify ****docker-compose.prod.yml****
         MONGO_INITDB_ROOT_USERNAME=jasmeet
         MONGO_INITDB_ROOT_PASSWORD=mypassword
 
-        // navigate to your oort of the Ubuntu VM
+        // method 1(temporary env variable vanishes after bash terminal session is closed.)
+        // navigate to root
+        set -a # automatically export all variables
+        source .env
+        set +a
+
+        // OR method 2(permanent)
+
+        // navigate to your root of the Ubuntu VM sudo su
         ls -la
-        // open the .profile
-        vi .profile
-        // go to the bootom of the file .profile
+        // open the profile /etc
+        vi profile
+        // go to the bottom of the file .profile
         // add config for the env file we just created
 
+        // Esc+A in vim editor then press enter for new line
         set -o allexport; source /root/.env; set +o allexport;
 
         // the above command will loop through all the environment variables and then set on this machine.
