@@ -629,7 +629,7 @@ Follow the steps once you have your VM instance set up
 Modify ****docker-compose.prod.yml****
 
 11.) Set up environment variable on a linux machine
-
+refer https://mkyong.com/linux/how-to-set-environment-variable-in-ubuntu/
         export SESSION_SECRET="mysecretSessionKey"
         printenv
         // printenv shows all the env variables
@@ -694,4 +694,44 @@ since we have mentioned port 80 it is the defualt no need to specify port 80.
 
           http://ubuntuVMIP/api/v1
 
-****timestamp 4:18 make the request via postman to the server(ubuntu VM) IP to crosscheck we didnt break anything.****
+=================
+
+# Pushing Changes to the production server ubuntu VM
+
+=================
+
+1.) Now say when a developer make changes to the code and push to the git repo.
+
+2.) the devops just has to git pull and then docker-compose with --build to implement the changes.
+
+3.) but running --build everytime would cause each layer of docker to rebuild though only changes were made to node_app server.js by the developer to avoid this we take the following approach
+
+
+      // we can tell docker-compose to rebuild the node-app only by specifiying the service named as node-app in the production server(ubuntu VM)
+
+      docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build node-app
+
+      // now in our case since we have specified that node-app depends on mongo hence the docker compose rebuilds the mongo image container to prevent this we can pass the --no-deps flag
+
+      docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build --no-deps node-app
+
+# So far we have set up a devlopment to production workflow.
+
+1) developer push to github
+2.) production server(ubuntu VM) pulls github code
+3.) production server do docker-compose up --build to build the new app image container.
+
+## Problem with the above DEVOPS lifecycle
+- It is never recommended to build the image at the production server as for large application it may cause outage as lot of server resources and cpu cycles will be utilized into building image at production server.
+
+So ideally the production server should only be responsible for  handling the production traffic i,e the request made to the server.
+
+
+=============
+
+# Optimized Dev->Prod Workflow setup
+****where the image is not rebuild at the production server instead build the image on different machine that is not production server.****
+
+
+
+****timestamp 4:29 Optimized dev->prod Flow with different machine to rebuild image instead building image at production server.****
