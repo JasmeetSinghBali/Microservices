@@ -1,1 +1,4 @@
 node_modules
+ormconfig.json
+devLearning.session.sql
+.vscode
