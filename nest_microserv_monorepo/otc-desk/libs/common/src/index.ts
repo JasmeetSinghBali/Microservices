@@ -10,3 +10,5 @@ DATED: 19/06/2022
 export * from './database/database.module';
 export * from './database/abstract.repository';
 export * from './database/abstract.schema'
+export * from './rabbitmq/rmq.service'
+export * from './rabbitmq/rmq.module'

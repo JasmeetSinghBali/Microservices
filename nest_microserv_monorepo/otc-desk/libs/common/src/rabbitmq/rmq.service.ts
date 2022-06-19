@@ -6,7 +6,7 @@ import { RmqOptions, Transport } from "@nestjs/microservices";
 
 // implement rabbit mq functionality
 @Injectable()
-export class RmqModule{
+export class RmqService{
     constructor (private readonly configService:ConfigService){}
     // COMMON-INITIALIZER-RABBITMQ for microservices
     // takes name of the rabbit mq queue to be initialized by a microservice

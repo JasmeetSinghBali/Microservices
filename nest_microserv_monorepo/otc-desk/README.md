@@ -159,4 +159,6 @@ Note- make sure to do docker-compose up --build -V each time new dependency is i
               amqplib
               amqp-connection-manager
 
-- new folder rabbitmq inside of libs(common-code)
+- new folder rabbitmq inside of libs(common-code) with services and module
+
+- use common initializer rmq service by ticket-generation -> main.ts
