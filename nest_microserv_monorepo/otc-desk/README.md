@@ -64,7 +64,7 @@
 - a new libs folder will be created that has code that can be shared by all microservices
 - check nest-cli u will have now common as liberary their under projects section
 
-> ## Step-6 setting up mongoDB in nestjs
+> ## Step-6 refCommit: c20d2783b56d41c70d3b63bc293bb4572a556225 setting up mongoDB in nestjs
 
 - npm i @nestjs/mongoose mongoose (this will now be accessible to all apps & liberaries)
 - go to libs-> common -> src -> database-> database.module.ts
@@ -102,7 +102,7 @@
 
 > **NOTE- make sure u delete the .git from otc_desk then do git add . git commit**
 
-> ## Using common library into root and microservices
+> ## Step-7 refCommit:368fcea3ed3b7e30e7e3ea86131be878a0cba15b Using common library into root and microservices
 
                 # start root app
                 npm run start:dev quote-orders
@@ -120,3 +120,15 @@
 
               # cd to otc_desk
               npm i joi
+
+> ## Step-8 set up docker-compose to run all microservices independently
+
+- create docker-compose.yaml in root directory i.e otc_desk
+
+> ### Note- use replica set in mongoDB to make use of DB transaction functionality
+
+> MongoDB transaction For situations that require atomicity of reads and writes to multiple documents (in a single or multiple collections), MongoDB supports multi-document transactions. With distributed transactions, transactions can be used across multiple operations, collections, databases, documents, and shards. **ref: https://www.mongodb.com/docs/manual/core/transactions/#:~:text=For%20situations%20that%20require%20atomicity,databases%2C%20documents%2C%20and%20shards.**
+
+- docker-compose replica set - ref: https://github.com/bitnami/bitnami-docker-mongodb/blob/master/docker-compose-replicaset.yml**
+
+- create Dockerfile.yml for each of the microservice that will be the entry for building continers for those microservice via the common root level docker-compose.yml file
