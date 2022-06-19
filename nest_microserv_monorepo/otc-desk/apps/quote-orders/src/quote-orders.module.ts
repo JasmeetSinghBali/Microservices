@@ -15,6 +15,7 @@ import { Order, QuoteOrdersSchema } from './schemas/order.schema';
     // validation schema to make sure env is set while mongoDB connection instantiation
     validationSchema: Joi.object({
       MONGODB_URI: Joi.string().required(),
+      PORT: Joi.number().required(),
     }),
     // mention file path as each microservice will have its own set of .env
     envFilePath: './apps/quote-orders/.env'

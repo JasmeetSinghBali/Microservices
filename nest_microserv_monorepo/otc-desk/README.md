@@ -136,3 +136,14 @@
             # build new images and also reset volumes in development
             # no need to specify -V in production
             docker compose up --build -V
+
+> ## Step-9 class validator ref: https://www.npmjs.com/package/class-validator
+
+- **validations for dto's / request**
+
+              # at root otc_desk
+              npm i class-validator
+
+- **also install 'class-transformer' needed for making class-validator work properly**
+
+Note- make sure to do docker-compose up --build -V each time new dependency is installed
