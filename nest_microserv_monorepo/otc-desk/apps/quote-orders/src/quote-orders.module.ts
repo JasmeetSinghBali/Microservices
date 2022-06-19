@@ -1,4 +1,4 @@
-import { DatabaseModule } from '@app/common';
+import { DatabaseModule, RmqModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -7,10 +7,11 @@ import { QuoteOrdersRepository } from './QuoteOrders.repository';
 import { QuoteOrdersController } from './quote-orders.controller';
 import { QuoteOrdersService } from './quote-orders.service';
 import { Order, QuoteOrdersSchema } from './schemas/order.schema';
+import { TICKET_GENERATION_SERVICE } from './constants/services';
  
 @Module({
   imports: [ConfigModule.forRoot({
-    // ConfigModule now accessible in entire quote-orders
+    // ConfigModule now accessible in entire quote-orders with isGlobal:true
     isGlobal: true,
     // validation schema to make sure env is set while mongoDB connection instantiation
     validationSchema: Joi.object({
@@ -24,7 +25,12 @@ import { Order, QuoteOrdersSchema } from './schemas/order.schema';
   DatabaseModule,
   // register the Order Schema
   // with array of objects with each schema
-  MongooseModule.forFeature([{name: Order.name,schema: QuoteOrdersSchema}])
+  MongooseModule.forFeature([{name: Order.name,schema: QuoteOrdersSchema}]),
+  // 📝 importing dynamic rmq module here so that quote-orders can register the ticket-generation microservice and use it to communicate with it
+  // registering the ticket-generation service inside of quote-orders modules via rabbitmq module
+  RmqModule.register({
+    name: TICKET_GENERATION_SERVICE
+  })
 ],
   controllers: [QuoteOrdersController],
   // instantiate the QuoteOrdersServices & QuoteOrdersRepository

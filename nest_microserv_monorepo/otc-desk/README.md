@@ -165,5 +165,17 @@ Note- make sure to do docker-compose up --build -V each time new dependency is i
 
 > # IMP:📝 Step - 11 quote-orders Communicating with ticket-generation via rabbitmq
 
+ref: https://docs.nestjs.com/microservices/rabbitmq
+
 - create a dynamic module check rmq.module.ts
 - this will help in using the dynamic rmq module inside of quote-orders microservice to register the ticket-generation microservice & use it to communicate with it
+
+- next import the rmq module inside of quote-orders module
+
+- finally inject the ticket-generation service in quote-order.service.ts so that the two can interact.
+
+> ## IMP: 📝 The flow (Database transactions included)
+
+- quote-orders microservice will createOrder and then on success it will emit an event to ticket-generation microservice which then will generate a ticket.
+
+- **Database Transactions makes sure that a functionality is only performed if database calls seed if dont then the service/system dont call that functionality.**
