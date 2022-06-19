@@ -187,3 +187,9 @@ ref: https://docs.nestjs.com/microservices/rabbitmq
 > IMP: 📝**make use of rxjs to implement reactive programming to handle observables,async implementations, callbacks and event based programs.**
 
 > # IMP: Step- 13 📝 ticket-microservice recieving event
+
+ref: ticket-generation controller
+
+> # Imp : Step-14 handling ack for the messages in rabbit mq to avoid re-replaying the old messages.
+
+5550 ts
