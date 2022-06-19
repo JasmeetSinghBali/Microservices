@@ -1,0 +1,48 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/otc-desk/src",
+  "monorepo": true,
+  "root": "apps/quote-orders",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/quote-orders/tsconfig.app.json"
+  },
+  "projects": {
+    "quote-orders": {
+      "type": "application",
+      "root": "apps/quote-orders",
+      "entryFile": "main",
+      "sourceRoot": "apps/quote-orders/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/quote-orders/tsconfig.app.json"
+      }
+    },
+    "ticket-generation": {
+      "type": "application",
+      "root": "apps/ticket-generation",
+      "entryFile": "main",
+      "sourceRoot": "apps/ticket-generation/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ticket-generation/tsconfig.app.json"
+      }
+    },
+    "auth": {
+      "type": "application",
+      "root": "apps/auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth/tsconfig.app.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    }
+  }
+}
