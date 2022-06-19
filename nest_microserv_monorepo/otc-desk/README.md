@@ -162,3 +162,7 @@ Note- make sure to do docker-compose up --build -V each time new dependency is i
 - new folder rabbitmq inside of libs(common-code) with services and module
 
 - use common initializer rmq service by ticket-generation -> main.ts
+
+> ## Step - 11 quote-orders Communicating with ticket-generation via rabbitmq
+
+- create a dynamic module check rmq.module.ts
