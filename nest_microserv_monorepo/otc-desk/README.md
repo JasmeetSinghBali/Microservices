@@ -101,3 +101,22 @@
 - be in root otc_desk then -> npm i @nestjs/config
 
 > **NOTE- make sure u delete the .git from otc_desk then do git add . git commit**
+
+> ## Using common library into root and microservices
+
+                # start root app
+                npm run start:dev quote-orders
+
+> 1.  use database.module inside quote-orders.module for DB connection
+
+                # imports ConfigModule injected by DatabaseModule of the common libs
+                imports: [ConfigModule.forRoot({
+                  isGlobal: true
+                })]
+
+- **isGlobal:true will help in making ConfigModule available globally in entire quotes-order application i.e no need to reinstantiated**
+
+> 2.  validationSchema checks wheather their are certain env variables defined if not defined then throw error on app startup use joi to do that or any other package like zod or yup
+
+              # cd to otc_desk
+              npm i joi
