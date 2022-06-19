@@ -1,5 +1,5 @@
 services:
-  # root quote-orders microservice
+  # ✔ root quote-orders microservice
   quote-orders:
     build: 
       context: .
@@ -23,7 +23,34 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '3000:3000'
-  # mongodb bitnami image with replica set to take advantage of Atomicity in MongoDB transaction across multiple collection/documents
+  # ✔ ticket-generation microservice that uses rabbitmq  
+  ticket-generation:
+    build: 
+      context: .
+      dockerfile: ./apps/ticket-generation/Dockerfile
+      # specify the stage that we wish to target development or production stage
+      target: development
+    # overides the command mentiond in Dockerfile
+    command: npm run start:dev ticket-generation
+    # loading all .env for quote-orders microservice
+    env_file:
+      - ./apps/ticket-generation/.env
+    depends_on:
+      - mongodb-primary
+      - mongodb-secondary
+      - mongodb-arbiter
+    # 🎈 volumes not needed in production
+    volumes:
+      - .:/usr/src/app
+      # this prevents syncing the node_modules in  [our local system != inside docker container]
+      # at the same time maintining the node_modules intact in the docker container
+      - /usr/src/app/node_modules
+  # ✔ rabbit mq container
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+  # ✔ mongodb bitnami image with replica set to take advantage of Atomicity in MongoDB transaction across multiple collection/documents
   mongodb-primary:
     image: docker.io/bitnami/mongodb:5.0
     environment:
