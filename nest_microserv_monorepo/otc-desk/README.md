@@ -132,3 +132,7 @@
 - docker-compose replica set - ref: https://github.com/bitnami/bitnami-docker-mongodb/blob/master/docker-compose-replicaset.yml**
 
 - create Dockerfile.yml for each of the microservice that will be the entry for building continers for those microservice via the common root level docker-compose.yml file
+
+            # build new images and also reset volumes in development
+            # no need to specify -V in production
+            docker compose up --build -V

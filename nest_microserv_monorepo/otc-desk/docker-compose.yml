@@ -1,4 +1,29 @@
 services:
+  # root quote-orders microservice
+  quote-orders:
+    build: 
+      context: .
+      dockerfile: ./apps/quote-orders/Dockerfile
+      # specify the stage that we wish to target development or production stage
+      target: development
+    # overides the command mentiond in Dockerfile
+    command: npm run start:dev quote-orders
+    # loading all .env for quote-orders microservice
+    env_file:
+      - ./apps/quote-orders/.env
+    depends_on:
+      - mongodb-primary
+      - mongodb-secondary
+      - mongodb-arbiter
+    # 🎈 volumes not needed in production
+    volumes:
+      - .:/usr/src/app
+      # this prevents syncing the node_modules in  [our local system != inside docker container]
+      # at the same time maintining the node_modules intact in the docker container
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+  # mongodb bitnami image with replica set to take advantage of Atomicity in MongoDB transaction across multiple collection/documents
   mongodb-primary:
     image: docker.io/bitnami/mongodb:5.0
     environment:
@@ -8,7 +33,7 @@ services:
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
     volumes:
       - 'mongodb_master_data:/bitnami/mongodb'
-    # no need to specify ports if u are using the mongodb atlas to connect
+    # 🎈 no need to specify ports if u are using the mongodb atlas cloud to connect
     ports:
       - '27017:27017'
 
@@ -33,7 +58,7 @@ services:
       - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
       - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=password123
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
-
+# 🎈 check alternatives for this as for production we dont need the volumes mapping
 volumes:
   mongodb_master_data:
     driver: local
