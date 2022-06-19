@@ -180,6 +180,10 @@ ref: https://docs.nestjs.com/microservices/rabbitmq
 
 - **Database Transactions makes sure that a functionality is only performed if database calls seed if seed not called then dont call that functionality.**
 
+- creating database transaction session & emitting the event
+
 > ref: quote-orders.services
 
 > IMP: 📝**make use of rxjs to implement reactive programming to handle observables,async implementations, callbacks and event based programs.**
+
+> # IMP: Step- 13 📝 ticket-microservice recieving event
