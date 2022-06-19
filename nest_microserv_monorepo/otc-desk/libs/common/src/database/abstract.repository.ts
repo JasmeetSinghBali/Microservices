@@ -90,7 +90,9 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
 
   // start a MongoDB Transaction session
   async startTransaction() {
+    //starting a session
     const session = await this.connection.startSession();
+    // and then start a transaction on that already started session
     session.startTransaction();
     return session;
   }

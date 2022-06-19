@@ -174,8 +174,12 @@ ref: https://docs.nestjs.com/microservices/rabbitmq
 
 - finally inject the ticket-generation service in quote-order.service.ts so that the two can interact.
 
-> ## IMP: 📝 The flow (Database transactions included)
+> # IMP: Step- 12 📝 ATOMIC Transactions The flow (Database transactions included)
 
-- quote-orders microservice will createOrder and then on success it will emit an event to ticket-generation microservice which then will generate a ticket.
+> FLOW: quote-orders microservice will createOrder and then on success it will emit an event to ticket-generation microservice which then will generate a ticket.
 
-- **Database Transactions makes sure that a functionality is only performed if database calls seed if dont then the service/system dont call that functionality.**
+- **Database Transactions makes sure that a functionality is only performed if database calls seed if seed not called then dont call that functionality.**
+
+> ref: quote-orders.services
+
+> IMP: 📝**make use of rxjs to implement reactive programming to handle observables,async implementations, callbacks and event based programs.**
