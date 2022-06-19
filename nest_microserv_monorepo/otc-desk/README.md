@@ -137,7 +137,7 @@
             # no need to specify -V in production
             docker compose up --build -V
 
-> ## Step-9 class validator ref: https://www.npmjs.com/package/class-validator
+> ## Step-9 class validator ref: https://www.npmjs.com/package/class-validator, https://docs.nestjs.com/techniques/validation
 
 - **validations for dto's / request**
 
@@ -147,3 +147,16 @@
 - **also install 'class-transformer' needed for making class-validator work properly**
 
 Note- make sure to do docker-compose up --build -V each time new dependency is installed
+
+> ## Step-10 Connecting the microservices in the application & configure/setup rabbitmq as common libs
+
+- initializing the ticket-generation as rabbitmq microservice
+
+              # at root otc_desk
+              # add depend to establish connection to rabbit mq & setup ticket-generation as microservice
+
+              @nestjs/microservices
+              amqplib
+              amqp-connection-manager
+
+- new folder rabbitmq inside of libs(common-code)

@@ -16,9 +16,7 @@ export class QuoteOrdersController {
   }
   // get orders
   @Get()
-  async getOrders(
-    @Body() request: createOrderRequest
-  ){
+  async getOrders(){
     return this.quoteOrdersService.getOrders();
   }
 }
