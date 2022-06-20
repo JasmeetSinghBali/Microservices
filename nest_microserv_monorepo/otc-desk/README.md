@@ -217,4 +217,4 @@ ref: ticket-generation controller
 
 - ref: otc_desk -> apps-> auth-> src
 
-- jwt strategy is used by rabbit mq to authenticate request and then get details of the refference user with it, while local strategy used for simple email and password login
+- jwt strategy(internal use) is used by rabbit mq to authenticate request and then get details of the refference user with it, while local strategy(extenral-use) used for simple email and password login to then generate jwt's
