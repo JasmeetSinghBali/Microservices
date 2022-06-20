@@ -1,10 +1,8 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
-import cookieParser from "cookie-parser";
+import * as cookieParser from "cookie-parser";
 import { RmqModule } from "../rabbitmq/rmq.module";
 import { AUTH_SERVICE } from "./services";
 
-// whichever other module that implements the AuthModule it will implement cookie parsing
-// cookie parsing will help to grab JWT from cookies
 @Module({
     // register rmqservice so that  the auth service can comm with rabbit mq service
     imports:[RmqModule.register({name: AUTH_SERVICE})],
@@ -16,6 +14,8 @@ export class AuthModule implements NestModule{
     configure(consumer: MiddlewareConsumer) {
         // this will grab cookie and append with the current request
         // and we want this for all route in the system so forRoutes(*)
+        // whichever other module that implements the AuthModule it will implement cookie parsing
+        // cookie parsing will help to grab JWT from cookies
         consumer.apply(cookieParser()).forRoutes('*');
     }
 }

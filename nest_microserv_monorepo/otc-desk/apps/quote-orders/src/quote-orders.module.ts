@@ -1,4 +1,4 @@
-import { DatabaseModule, RmqModule } from '@app/common';
+import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -30,7 +30,10 @@ import { TICKET_GENERATION_SERVICE } from './constants/services';
   // registering the ticket-generation service inside of quote-orders modules via rabbitmq module
   RmqModule.register({
     name: TICKET_GENERATION_SERVICE
-  })
+  }),
+  //importing auth-jwt-guard and AuthModule from common lib to make use of jwt strategy and apply JwtAuthGuard via @Req nestjs/common
+  // 🏷 note the AuthModule make use of AuthService -> register()  to register new queue that uses the Auth queue from .env so make sure to set it in .env 
+  AuthModule
 ],
   controllers: [QuoteOrdersController],
   // instantiate the QuoteOrdersServices & QuoteOrdersRepository
