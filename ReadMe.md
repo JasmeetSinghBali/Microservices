@@ -1,87 +1,33 @@
-# Node.js Microservices Basics Hands On
+# 🎁 This repo contains enterprise-grade microservice architecture boilerplates & snippets with some mini POC's.
 
-****By- Jasmeet****
+\***\*By- Jasmeet\*\***
 
-****Level : Intermediate****
+\***\*Level : Beginner to Intermediate to Advanced Levels\*\***
 
-### Prerequisites:
+> ### Prerequisites:
 
-#### - Javascript
-#### - Docker
-#### - REST API
+- WebDev [Intermediate]
+- OOPS [Intermediate]
+- REST API [Intermediate]
+- Microservices [basics]
+- Docker [u-heard-the-name-thats-enough😝]
 
-# Aim/Covered Topics
+> ## This Repo has:
 
-## Hands On in the following topics->
+**Basics**
 
-### - what , when & how to Build microservices
-### - microservices monitoring,logging,testing,& scaling services
-### - Implement d/f microservice pattern using docker-compose (EDA,CQRS Gateway)
-### - Understanding different tools for setting up microservice on loacal system (docker & k85)
-### - Building services & Deploying them cerating microservices via node.js with docker and k85.
+- [DOCKER] basics to Intermediate Snippet/boilerplate ref: https://github.com/Jasmeet-1998/Microservices/tree/master/microservices_docker_basics
 
-## => Fundamental Characterstic every microservice should have
+**Intermediate**
 
-### Zero Configuration
-- Any Microservice system will have hundreds of services so a manual configuration of addresses,ports,IP and API capabilities is infeasible.
+- [MICROSERVICES+DOCKER] Dev+Prod Dockerize your app approach with example setup with stack Node+express+mongo+redis ref: https://github.com/Jasmeet-1998/Microservices/tree/master/building_microservice_hands_on_intermediate
 
-### Highly redundant
+**Advanced**
 
-- Service failure are common in this architecture so their must be cheap copies available at your disposal with proper failover mechanism.
+- [MICROSERVICES+MONOREPO+DOCKER+OOPS] enterprise grade microservices setup in nest+mongo+docker+rabbitmq following best industry practice & OOPS concepts like Observables(rxjs),Dependency Inversions,Injections,Decorators oriented classes, database transactions, abstract repository and so on.... ref: https://github.com/Jasmeet-1998/Microservices/tree/master/nest_microserv_monorepo/otc-desk
 
-### Fault-tolerant
+> **AUTHOR NOTE:**
 
-- the system should tolerate and gracefully handle miscommunication,errors,processes,messages,timeouts etc
-- ****Even if certain services are down the other unrelated services must continue to run****
+👋 [HI,ATTENTION-PLEASE]
 
-### Self Healing
-- Its noramal to have errors and system fails the system must automatically recover failed services and functionality.
-
-### Auto-discovery
-- the services should automatically identify new services that are introduced to the system to start communication without manual intervention or downtime.
-
-## => Docker and Kubernetes and Containerization
-
-- Helps different docker containers that can be of same stack tech or different tech stack to talk to one another by container orchesterations.
-
-- ****like backend microservice in python/ django communicating with Front-end microservice built in React.js.****
-
-- ****or like MONGODB is communicating with front-end ruby on rails****
-
-                             Kubernetes/docker/containerization
-
-                              front(microserv A)
-      client      ------>            backend(microserv B)
-                              Database(microserv C)
-
-## => Service Registry (IMPORTANT)
-
-- ****Consider their are different services instances REST API that are new and are going to be added to already existing microservice instance X then the new services will register themselves with the service registry****
-
-- ****Now say if a new service or old service want to interact with the Auth microservice then it will contact the service registry directly to determine which service is auth service instead of going to each and every service and asking are you auth service.****
-
-      - microservice A --------->  SERVICE
-      - microservice B --------->  REGISTERY <----microservice X(finding microservice C will contact service Registery)
-      - microservice  C --------->  SYSTEM
-
-## => API gateway & lambda
-
-- ****We can provide various rate limiting and IAM access policy via API gateway to ensure the availability of api endpoints to only certain individual/organization.****
-
-- ****lambda defines the rule for the particular API for a microservice when the client want to talk to the microservice via the API****
-
-       - Client--->API gateway---->lambda---->microservice
-
-## => Complex Microservices
-
-- ****Every Microservice wheather mobile or web they will have a SINGLE SOURCE  and the failure of a single microservice will not impact the system.****
-
-      - mob app-->API gateway---->(REST API) Account microservice--->Account DB
-      - Web --->front web APP---->(REST API) Inventory microservice---->Inventory DB
-
-## => Fundamentals of Designing Microservices (IMPORTANT)
-
-####  Each Microservice must have their own unique Data source/DB No two microservices should share any data source as we saw earlier in mob app vs web above to ensure Fault tolerance. failure of one dont effect the entire system.
-
-================== Theory Ends Here ==========================
-***
+- feel free to ping me at jasmeetbali.dev.2021@gmail.com if u are up for a collab. for a project that we can build from scratch and create the next failing startup 😝......okey jokes aside u know as they say every step u take after a failure is ultimately counted as your success 🚀
