@@ -206,8 +206,8 @@ ref: ticket-generation controller
 
 > # Step -15 setting up authentication to system auth(microservice) (JWT approach) ref: https://docs.nestjs.com/security/authentication
 
-- for user when they create orders
-- & to authenticate the microservices so that all messages recieved have authentication on them and their is protected comms b/w microservices.
+- for user login (local strategy) email & password
+- (jwt strategy) with jwt to authenticate the microservices so that all messages recieved have authentication on them and their is protected comms b/w microservices.
 
                   # at otc_desk level
                   # add
@@ -218,3 +218,9 @@ ref: ticket-generation controller
 - ref: otc_desk -> apps-> auth-> src
 
 - jwt strategy(internal use) is used by rabbit mq to authenticate request and then get details of the refference user with it, while local strategy(extenral-use) used for simple email and password login to then generate jwt's
+
+> # Step-16 to add auth in http and over rabbitmq service we create a common libs auth
+
+- ref: libs>common>src>auth
+
+- **IMP : 📝rxjs observables are push system for javascript, contrast to promise , promise deal with one asynchronous event at a time, while observables handle a sequence of asynchronous event over a period of time plus promises are immediately executed after creation while observables are lazy they are not executed i.e do not gives back response until we subscribe them using the subscribe() method**
