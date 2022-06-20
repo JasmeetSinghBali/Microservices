@@ -1,10 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { RmqService } from '@app/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { TicketGenerationService } from './ticket-generation.service';
 
 @Controller()
 export class TicketGenerationController {
-  constructor(private readonly ticketGenerationService: TicketGenerationService) {}
+  constructor(
+    private readonly ticketGenerationService: TicketGenerationService,
+    //injecting RmqService for accessing manual ack() method 
+    private readonly rmqService:RmqService
+    ) {}
 
   @Get()
   getHello(): string {
@@ -17,5 +22,8 @@ export class TicketGenerationController {
   async handleOrderCreate(@Payload() data: any, @Ctx() context: RmqContext){
     // generating the ticket with ref to the data received from quote-order endpoint
     this.ticketGenerationService.generateTicket(data);
+    // once the ticket is generated successfully
+    // manually acknowledge the current message & remove it of the rabbit queue to avoid re-screening this same message multiple times
+    this.rmqService.ack(context);
   }
 }

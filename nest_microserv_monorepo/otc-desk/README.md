@@ -195,3 +195,5 @@ ref: ticket-generation controller
 - since if we set ack:false then their is a manual requirement to acknowledge the messages in rabbitmq
 
 - ref: rmq.service.ts where a ack() that will acknowledge the existing messages that are read are take of the queue
+
+- further inject the rabbit mq service to use manual ack() inside of the ticket-generation.controller.ts
