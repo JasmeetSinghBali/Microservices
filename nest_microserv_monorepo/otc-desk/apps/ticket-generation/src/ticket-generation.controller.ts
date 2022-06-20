@@ -1,5 +1,5 @@
 import { RmqService } from '@app/common';
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { TicketGenerationService } from './ticket-generation.service';
 

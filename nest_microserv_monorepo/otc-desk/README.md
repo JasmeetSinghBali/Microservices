@@ -1,5 +1,9 @@
 > # Walkthrough setting up Microservices monorepo in Nest.js
 
+> LEGENDS
+
+- [📝] signifies Important concepts & flows
+
 > This walkthrough includes tech..
 
 - Nestjs
@@ -190,10 +194,27 @@ ref: https://docs.nestjs.com/microservices/rabbitmq
 
 ref: ticket-generation controller
 
-> # Imp : Step-14 handling ack for the messages in rabbit mq to avoid re-replaying the old messages.
+> # Imp : Step-14 📝 handling ack for the messages in rabbit mq to avoid re-replaying the old messages.
 
 - since if we set ack:false then their is a manual requirement to acknowledge the messages in rabbitmq
 
 - ref: rmq.service.ts where a ack() that will acknowledge the existing messages that are read are take of the queue
 
 - further inject the rabbit mq service to use manual ack() inside of the ticket-generation.controller.ts
+
+- **ref: deaa8149d42dbb336ceb30d0778af47ae9b91a9c & 8fda433dc8bc6f25ada7b13dfd5f7d471f8b82ec**
+
+> # Step -15 setting up authentication to system auth(microservice) (JWT approach) ref: https://docs.nestjs.com/security/authentication
+
+- for user when they create orders
+- & to authenticate the microservices so that all messages recieved have authentication on them and their is protected comms b/w microservices.
+
+                  # at otc_desk level
+                  # add
+                  @nestjs/jwt @nestjs/passport bcrypt cookie-parser passport passport-jwt passport-local
+                  # add dev depend as -D
+                  @types/cookie-parser @types/passport-jwt @types/passport-local
+
+- ref: otc_desk -> apps-> auth-> src
+
+- jwt strategy is used by rabbit mq to authenticate request and then get details of the refference user with it, while local strategy used for simple email and password login
