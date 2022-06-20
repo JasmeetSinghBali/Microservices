@@ -6,7 +6,7 @@ import { Types } from 'mongoose';
 import { TokenPayload } from '../auth.service';
 import { UsersService } from '../users/users.service';
 
-// This jwt strategy is used to autheicate request and then grab user details ref to this jwt token
+// This jwt strategy is used to authenticate request and then grab user details ref to this jwt token
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
@@ -14,6 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly usersService: UsersService,
   ) {
     super({
+      // extracting jwt from the request
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: any) => {
           return request?.Authentication;

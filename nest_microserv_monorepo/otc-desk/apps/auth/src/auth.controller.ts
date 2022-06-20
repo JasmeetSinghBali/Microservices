@@ -21,11 +21,13 @@ export class AuthController {
     await this.authService.login(user, response);
     response.send(user);
   }
- 
-  // JWT strategy that is used for rabbitmq
+  
+  // 📝 ClientProxy send request from jwt-auth-guard message pattern
+  // Authenticates the current user by grabbing it via context that we recieve from message pattern send as request intially by jwt-auth-guard in libs common via current-user.decorator.ts with rpc|http case mentioned
   @UseGuards(JwtAuthGuard)
   @MessagePattern('validate_user')
-  async validateUser(@CurrentUser() user: User) {
+  async validateUser(@CurrentUser() user: User){
+    // 📝 this will return user back to the calling service if the user is authenticated by jwt auth guard 
     return user;
   }
 }
