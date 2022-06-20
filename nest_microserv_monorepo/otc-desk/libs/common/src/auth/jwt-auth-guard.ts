@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
-import { catchError, Observable } from "rxjs";
+import { catchError, Observable, tap } from "rxjs";
 import { AUTH_SERVICE } from "./services";
 
 @Injectable()
@@ -17,7 +17,7 @@ export class JwtAuthGuard implements CanActivate{
             Authentication: authentication,
         }).pipe(
             // pipe this rxjs observables with tap operator for side effects
-            // to get the response from auth service and then addUser to the current request to data object depending upon rpc or http
+            // to get the response from auth service and then use addUser to add res to current request to data object(rpc) depending upon rpc or http
             tap((res)=>{
                 this.addUser(res,context)
             }),
@@ -45,8 +45,14 @@ export class JwtAuthGuard implements CanActivate{
         return authentication;
     }
 
-    // adds user to the request http or rpc
+    // 📝 adds user to the request http or rpc
     private addUser(user:any,context: ExecutionContext){
-
+        if(context.getType() === 'rpc'){
+            // add user to the data object
+            context.switchToRpc().getData().user = user;
+        } else if(context.getType()==='http'){
+            // add user to http request
+            context.switchToHttp().getRequest().user = user;
+        }
     }
 }
