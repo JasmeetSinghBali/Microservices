@@ -192,4 +192,6 @@ ref: ticket-generation controller
 
 > # Imp : Step-14 handling ack for the messages in rabbit mq to avoid re-replaying the old messages.
 
-5550 ts
+- since if we set ack:false then their is a manual requirement to acknowledge the messages in rabbitmq
+
+- ref: rmq.service.ts where a ack() that will acknowledge the existing messages that are read are take of the queue

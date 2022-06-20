@@ -2,7 +2,7 @@
 
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { RmqOptions, Transport } from "@nestjs/microservices";
+import { RmqContext, RmqOptions, Transport } from "@nestjs/microservices";
 
 // implement rabbit mq functionality
 @Injectable()
@@ -24,5 +24,12 @@ export class RmqService{
                 persistent: true // so that the queue maintains the list of messages
             }
         }
+    }
+    // 📝 method to handle i.e acknowledge the messages when they are received
+    ack(context: RmqContext){
+        const channel = context.getChannelRef();
+        const originalMessage = context.getMessage();
+        // 📝 acknowledging the message from rabbit mq & take it off of the queeue
+        channel.ack(originalMessage)
     }
 }
