@@ -224,3 +224,5 @@ ref: ticket-generation controller
 - ref: libs>common>src>auth
 
 - **IMP : 📝rxjs observables are push system for javascript, contrast to promise , promise deal with one asynchronous event at a time, while observables handle a sequence of asynchronous event over a period of time plus promises are immediately executed after creation while observables are lazy they are not executed i.e do not gives back response until we subscribe them using the subscribe() method**
+
+> JwtAuthGuard applied to quote-orders i.e made them protected routes ref: eab50ca3370979ff4ff37fbd14b5dd9b66298390

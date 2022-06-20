@@ -12,7 +12,7 @@ export class QuoteOrdersService {
   // clientProxy helps to exchanges messages between microservices
   constructor(private readonly quoteOrdersRepository: QuoteOrdersRepository, @Inject(TICKET_GENERATION_SERVICE) private ticketGenerationClient: ClientProxy){}
   // service that call create orders repos with Orders model to create a new order
-  async createOrder(request: createOrderRequest){
+  async createOrder(request: createOrderRequest, authentication: string){
     // database transac session
     const session = await this.quoteOrdersRepository.startTransaction();
     try{
@@ -26,6 +26,8 @@ export class QuoteOrdersService {
       // emit the create order event to ticket-generation microservice named as order_created and data of event as the request received by createOrder 
       await lastValueFrom(this.ticketGenerationClient.emit('order_created',{
         request,
+        // so that jwt is passed to ticket-generation when event is emitted to it as ticket-generation route is now protected
+        Authentication: authentication,
       }),);
 
       // ✔ if we reach here then the event was successfully emitted to ticket-generation microservice

@@ -1,4 +1,4 @@
-import { RmqModule } from '@app/common';
+import { AuthModule, RmqModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import * as Joi from 'joi';
 import { ConfigModule } from '@nestjs/config';
@@ -16,6 +16,7 @@ import { TicketGenerationService } from './ticket-generation.service';
       }),
     }),
   RmqModule,
+  AuthModule
 ],
   controllers: [TicketGenerationController],
   providers: [TicketGenerationService],

@@ -16,7 +16,7 @@ export class QuoteOrdersController {
   ){
     // @Req object to extract the request object
     console.log(req.user);// if JwtAuthGuard succeded then the request object will have user on it
-    return this.quoteOrdersService.createOrder(request);
+    return this.quoteOrdersService.createOrder(request,req.cookies?.Authentication);// pass the attached jwt from the request to the create order service that then can while emitting the event to ticket-generation can check that jwt also at its end
   }
   // get orders
   @Get()
