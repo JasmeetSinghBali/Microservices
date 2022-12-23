@@ -18,6 +18,8 @@
 
 - [DOCKER] basics to Intermediate Snippet/boilerplate ref: https://github.com/Jasmeet-1998/Microservices/tree/master/microservices_docker_basics
 
+- - Go[MICROSERVICES] basics
+
 **Intermediate**
 
 - [MICROSERVICES+DOCKER] Dev+Prod Dockerize your app approach with example setup with stack Node+express+mongo+redis ref: https://github.com/Jasmeet-1998/Microservices/tree/master/building_microservice_hands_on_intermediate
