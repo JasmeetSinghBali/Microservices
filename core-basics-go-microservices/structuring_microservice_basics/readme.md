@@ -24,7 +24,7 @@
 
 ```
 
-> Tuning [setting up timeouts]
+> Tuning [setting up timeouts, graceful shutdown(to avoid current database transaction or current active client connection to just cut off abruptly)]
 
 ref: https://pkg.go.dev/net/http#Server
 
@@ -33,3 +33,8 @@ ref: https://pkg.go.dev/net/http#Server
 - WriteTimeout go server--->user
 
 - IdleTimeout [connection-pooling] i.e connection alive time used to keep the connection active, useful for microservices conected to each other for persistent connection between microservices specically for TLS connection that TCP, ideally this is higher
+
+```bash
+/*wait for the request currently been processed, and from this point wont take any more request and after current req are processed it shuts down the server */
+	s.Shutdown()
+```

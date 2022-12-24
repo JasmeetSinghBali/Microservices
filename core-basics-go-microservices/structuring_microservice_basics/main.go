@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"time"
 
 	"github.com/Jasmeet-1998/Microservices/structuring_microservice_basics/handlers"
@@ -43,5 +45,33 @@ func main() {
 		WriteTimeout: 1 * time.Second,
 	}
 
-	s.ListenAndServe()
+	/*
+		wrapped serve mux with custom tuning in goroutine
+		so it does not block the main flow of the program
+	*/
+	go func() {
+		err := s.ListenAndServe()
+		if err != nil {
+			gl.Fatal(err)
+		}
+	}()
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, os.Kill)
+
+	// passing value from channel sigChan to a variable via <- (kinda dequeing operator to dequeue the value from the channel)
+	sig := <-sigChan
+	gl.Println("Recieved a interupt/kill signal from sigChan (channel) , gracefully shutting down", sig)
+
+	/*
+		wait for the request currently been processed,
+		and from this point onwards i.e calling Shutdown() ,
+		server wont take any more request and after current req are processed
+		it shuts down the server
+	*/
+	// timeout context for server shutdown
+	// so their will be 30 second time-buffer for server to process exisiting request, if
+	// after 30 seconds request still pending then forcefully close it
+	timeoutContext, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	s.Shutdown(timeoutContext)
 }
