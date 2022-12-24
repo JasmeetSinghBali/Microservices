@@ -28,5 +28,6 @@ func main() {
 	sm := http.NewServeMux()
 	sm.Handle("/", gh)
 
-	http.ListenAndServe("127.0.0.1:5000", nil)
+	/*passsing the servemux instance to the server*/
+	http.ListenAndServe("127.0.0.1:5000", sm)
 }
