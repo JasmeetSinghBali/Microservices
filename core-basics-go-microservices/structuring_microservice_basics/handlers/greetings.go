@@ -20,7 +20,7 @@ func NewGreetings(traces *log.Logger) *Greetings {
 }
 
 /*
-method of Greetings struct that implements the http handler interface
+adds a method to Greetings struct that implements the http handler interface for handling the greetings i.e / route
 */
 func (g *Greetings) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 

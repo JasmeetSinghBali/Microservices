@@ -20,6 +20,7 @@ func main() {
 		injecting the logger into the NewGreetings method implementing the traces/logger instance of Greetings struct for greeting interface
 	*/
 	gh := handlers.NewGreetings(gl)
+	bh := handlers.NewDasvadania(gl)
 
 	/*
 		registering the greetings handler with the servemux with servermux sm instance
@@ -27,6 +28,7 @@ func main() {
 	*/
 	sm := http.NewServeMux()
 	sm.Handle("/", gh)
+	sm.Handle("/bye", bh)
 
 	/*passsing the servemux instance to the server*/
 	http.ListenAndServe("127.0.0.1:5000", sm)
