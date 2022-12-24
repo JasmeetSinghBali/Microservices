@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/Jasmeet-1998/Microservices/structuring_microservice_basics/handlers"
 )
@@ -30,6 +31,17 @@ func main() {
 	sm.Handle("/", gh)
 	sm.Handle("/bye", bh)
 
-	/*passsing the servemux instance to the server*/
-	http.ListenAndServe("127.0.0.1:5000", sm)
+	/*
+		Tuning the server
+		reff: https://pkg.go.dev/net/http#Server
+	*/
+	s := &http.Server{
+		Addr:         "127.0.0.1:5000",
+		Handler:      sm,
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  1 * time.Second,
+		WriteTimeout: 1 * time.Second,
+	}
+
+	s.ListenAndServe()
 }

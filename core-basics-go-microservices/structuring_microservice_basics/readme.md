@@ -23,3 +23,13 @@
 	sm.Handle("/",gh)
 
 ```
+
+> Tuning [setting up timeouts]
+
+ref: https://pkg.go.dev/net/http#Server
+
+- ReadTimeout user-->go server, example for larger files this wud be more for smaller files upload by user this wud be relatively smaller.
+
+- WriteTimeout go server--->user
+
+- IdleTimeout [connection-pooling] i.e connection alive time used to keep the connection active, useful for microservices conected to each other for persistent connection between microservices specically for TLS connection that TCP, ideally this is higher
