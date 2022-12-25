@@ -43,11 +43,20 @@ var productList = []*Product{
 	},
 }
 
+/*
+a method to the type Product named FromJSON
+to decode json ----> data via NewDecoder
+*/
+func (p *Product) FromJSON(r io.Reader) error {
+	e := json.NewDecoder(r)
+	return e.Decode(p)
+}
+
 type Products []*Product
 
 /*
 a method to the type Products named ToJSON
-that encodes the data---> json via NewEncoder
+that encodes the data---> json via NewEncoder better performance than json.Marshall as it does not requires allocation for output buffer & overhead processing which is present with json.Marshal
 */
 func (p *Products) ToJSON(w io.Writer) error {
 	e := json.NewEncoder(w)
@@ -56,4 +65,14 @@ func (p *Products) ToJSON(w io.Writer) error {
 
 func GetProducts() Products {
 	return productList
+}
+
+func getRandomId() int {
+	lengthProductList := productList[len(productList)-1]
+	return lengthProductList.ID + 1
+}
+
+func AddProduct(p *Product) {
+	p.ID = getRandomId()
+	productList = append(productList, p)
 }
