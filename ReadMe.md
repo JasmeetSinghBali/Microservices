@@ -18,7 +18,7 @@
 
 - [DOCKER] basics to Intermediate Snippet/boilerplate ref: https://github.com/Jasmeet-1998/Microservices/tree/master/microservices_docker_basics
 
-- - Go[MICROSERVICES] basics
+- Go [MICROSERVICES-basics](https://github.com/Jasmeet-1998/Microservices/tree/master/core-basics-go-microservices)
 
 **Intermediate**
 
