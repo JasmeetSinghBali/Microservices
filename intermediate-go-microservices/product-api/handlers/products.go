@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 
@@ -21,11 +20,11 @@ func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	/*access the method in data package to get product list*/
 	listOfProducts := data.GetProducts()
 
-	/*convert data ---> slice of byte to return it to client [marshalling]*/
-	d, err := json.Marshal(listOfProducts)
+	/*
+		calls ToJSON , converts data ---> slice of byte to return it to client [marshalling]
+	*/
+	err := listOfProducts.ToJSON(rw)
 	if err != nil {
 		http.Error(rw, "Failed to marshal json", http.StatusInternalServerError)
 	}
-
-	rw.Write(d)
 }

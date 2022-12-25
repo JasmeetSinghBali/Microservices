@@ -19,3 +19,8 @@ Field int `json:"myName,omitempty"`
 # dont return this field
 Field int `json: "-"`
 ```
+
+> new encoder over normal marshalling !
+
+- making use of direct encoder is better, as the standard marshalling is somewhat heavy where the direct encoder is lightweight
+  ref: https://pkg.go.dev/encoding/json#NewEncoder

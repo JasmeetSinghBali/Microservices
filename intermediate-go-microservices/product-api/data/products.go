@@ -1,6 +1,10 @@
 package data
 
-import "time"
+import (
+	"encoding/json"
+	"io"
+	"time"
+)
 
 /*
 Donuts
@@ -39,7 +43,17 @@ var productList = []*Product{
 	},
 }
 
-/*Data access method to access product[donut list]*/
-func GetProducts() []*Product {
+type Products []*Product
+
+/*
+a method to the type Products named ToJSON
+that encodes the data---> json via NewEncoder
+*/
+func (p *Products) ToJSON(w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(p)
+}
+
+func GetProducts() Products {
 	return productList
 }
