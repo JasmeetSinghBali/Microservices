@@ -24,6 +24,8 @@
 
 - [MICROSERVICES+DOCKER] Dev+Prod Dockerize your app approach with example setup with stack Node+express+mongo+redis ref: https://github.com/Jasmeet-1998/Microservices/tree/master/building_microservice_hands_on_intermediate
 
+- Go [MICROSERVICES-restful-api](https://github.com/Jasmeet-1998/Microservices/tree/master/intermediate-go-microservices/product-api)
+
 **Advanced**
 
 - [MICROSERVICES+MONOREPO+DOCKER+OOPS] enterprise grade microservices setup in nest+mongo+docker+rabbitmq following best industry practice & OOPS concepts like Observables(rxjs),Dependency Inversions,Injections,Decorators oriented classes, database transactions, abstract repository and so on.... ref: https://github.com/Jasmeet-1998/Microservices/tree/master/nest_microserv_monorepo/otc-desk
