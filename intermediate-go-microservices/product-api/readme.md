@@ -1,6 +1,6 @@
-> ## restful-api in go [standard libs]
+> ## Restful-api in go [standard libs] reff: product-api folder
 
-> encoding/decoding json [marshalling & unmarshalling]
+- encoding/decoding json [marshalling & unmarshalling]
 
 ref: https://pkg.go.dev/encoding/json
 
