@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -42,8 +43,9 @@ type KeyProduct struct{}
 
 /*
 restful post products method on Products handler struct
-try $ curl -v localhost:5000/products -d '{}'
-$ curl -v localhost:5000/products -d '{"id": 3 ,"name":"Something","description": "everything","Price": 0.00, "glaze": "nothing"}'
+fails - try $ curl localhost:5000/ -X POST -d '{"Name": "New Donut"}'
+pass - try  $ curl localhost:5000/ -X POST -d '{"Name": "New Donut", "Price": 7.99, "Glaze": "strawberry-bottom-vanilla"}'^C
+'
 */
 func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 	p.tracer.Println("Handle POST Product")
@@ -101,7 +103,20 @@ func (p Products) ProductValidationMiddleware(next http.Handler) http.Handler {
 
 		err := prd.FromJSON(r.Body)
 		if err != nil {
+			p.tracer.Println("Failed to parse json & go oriented data/struct", err)
 			http.Error(rw, "Unable to unmarshal json", http.StatusBadRequest)
+			return
+		}
+
+		// 📝 validate/sanitize the product paylaod via Validate method exposed via data package reff: data/products.go
+		err = prd.Validate()
+		if err != nil {
+			p.tracer.Println("Failed to validate/sanitize the payload", err)
+			http.Error(
+				rw,
+				fmt.Sprintf("Error validating product: %s", err),
+				http.StatusBadRequest,
+			)
 			return
 		}
 
