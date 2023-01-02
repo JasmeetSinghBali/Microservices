@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"strconv"
@@ -36,6 +37,9 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Key: value based context http struct
+type KeyProduct struct{}
+
 /*
 restful post products method on Products handler struct
 try $ curl -v localhost:5000/products -d '{}'
@@ -44,17 +48,13 @@ $ curl -v localhost:5000/products -d '{"id": 3 ,"name":"Something","description"
 func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 	p.tracer.Println("Handle POST Product")
 
-	newProd := &data.Product{}
-	err := newProd.FromJSON(r.Body)
-	if err != nil {
-		http.Error(rw, "failed to unmarshal json", http.StatusInternalServerError)
-		p.tracer.Println(err)
-	}
+	// 📝 Grab the unmarshalled product from KeyProduct struct context and store in newProd
+	newProd := r.Context().Value(KeyProduct{}).(data.Product)
 
 	/* %#v will show values & fields both*/
 	p.tracer.Printf("NewProd: %#v", newProd)
 	/*try $ curl -v localhost:5000/products -d '{"id": 10 ,"name":"Something","description": "everything","Price": 0.00, "glaze": "nothing"}'*/
-	data.AddProduct(newProd)
+	data.AddProduct(&newProd)
 }
 
 /*
@@ -74,18 +74,11 @@ func (p Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 
 	p.tracer.Println("Handle PUT Products", id)
 
-	// create a prod var that holds value of data.Product{} empty type struct address
-	prod := &data.Product{}
-
-	// store the request body update json to the prod address
-	err = prod.FromJSON(r.Body)
-
-	if err != nil {
-		http.Error(rw, "Unable to unmarshal json", http.StatusBadRequest)
-	}
+	// 📝 Grab the unmarshalled product from KeyProduct struct context and store in prod
+	prod := r.Context().Value(KeyProduct{}).(data.Product)
 
 	// make the method call to update product by extracetd id in data access layer products.go
-	err = data.UpdateProduct(id, prod)
+	err = data.UpdateProduct(id, &prod)
 	if err == data.ErrProductNotFound {
 		http.Error(rw, "Product not found", http.StatusNotFound)
 		return
@@ -96,4 +89,29 @@ func (p Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "failed to update product", http.StatusInternalServerError)
 		return
 	}
+}
+
+/*
+Middleware that validates the payload while creating or updating product
+*/
+func (p Products) ProductValidationMiddleware(next http.Handler) http.Handler {
+	// response is just an interface, where request is reff to the actual request passed on from client
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		prd := data.Product{}
+
+		err := prd.FromJSON(r.Body)
+		if err != nil {
+			http.Error(rw, "Unable to unmarshal json", http.StatusBadRequest)
+			return
+		}
+
+		// attaches the product i.e prd the unmarshalled json extracted from request body as newContext on the request object that is common and has reff from client--->middlewares--->handlers--->data access methods
+		ctx := context.WithValue(r.Context(), KeyProduct{}, prd)
+		// create new req with old common r (req) object reff with attached newContext
+		req := r.WithContext(ctx)
+
+		// pass control the http handler with mutated req & interface only rw
+		next.ServeHTTP(rw, req)
+
+	})
 }

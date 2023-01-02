@@ -32,9 +32,13 @@ func main() {
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
 	// 📝 the route attached has id as param which is regex 0-9 and can be 1 or more & gets auto extracted by gorilla router
 	putRouter.HandleFunc("/{id:[0-9]+}", pl.UpdateProducts)
+	// 📝 adding validation middleware to putRouter subrouter that gets executed before the handler
+	putRouter.Use(pl.ProductValidationMiddleware)
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/", pl.AddProduct)
+	// 📝 adding validation middleware to postRouter subrouter that gets executed before the handler
+	postRouter.Use(pl.ProductValidationMiddleware)
 
 	s := &http.Server{
 		Addr:         "127.0.0.1:5000",
