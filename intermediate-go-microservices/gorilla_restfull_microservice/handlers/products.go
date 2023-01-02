@@ -41,7 +41,7 @@ restful post products method on Products handler struct
 try $ curl -v localhost:5000/products -d '{}'
 $ curl -v localhost:5000/products -d '{"id": 3 ,"name":"Something","description": "everything","Price": 0.00, "glaze": "nothing"}'
 */
-func (p *Products) addProduct(rw http.ResponseWriter, r *http.Request) {
+func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 	p.tracer.Println("Handle POST Product")
 
 	newProd := &data.Product{}

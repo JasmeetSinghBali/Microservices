@@ -33,7 +33,8 @@ func main() {
 	// 📝 the route attached has id as param which is regex 0-9 and can be 1 or more & gets auto extracted by gorilla router
 	putRouter.HandleFunc("/{id:[0-9]+}", pl.UpdateProducts)
 
-	// sm.Handle("/products", pl)
+	postRouter := sm.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/", pl.AddProduct)
 
 	s := &http.Server{
 		Addr:         "127.0.0.1:5000",
