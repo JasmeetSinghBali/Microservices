@@ -23,10 +23,15 @@ func main() {
 
 	// 📝 ref: https://pkg.go.dev/github.com/gorilla/mux#section-readme subrouter section
 	// creates a sub-router named getRouter instance that has attached only GET type routes with it
-	getRouter := sm.Methods("GET").Subrouter()
+	getRouter := sm.Methods(http.MethodGet).Subrouter()
 
 	// 📝 now GET routes can be attached to this getRouter sub-router instance
 	getRouter.HandleFunc("/", pl.GetProducts)
+
+	// put sub-router instance named putRouter that has PUT type http request associated & mapped to it only
+	putRouter := sm.Methods(http.MethodPut).Subrouter()
+	// 📝 the route attached has id as param which is regex 0-9 and can be 1 or more & gets auto extracted by gorilla router
+	putRouter.HandleFunc("/{id:[0-9]+}", pl.UpdateProducts)
 
 	// sm.Handle("/products", pl)
 
