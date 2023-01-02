@@ -9,6 +9,9 @@ func TestCheckValidation(t *testing.T) {
 	p := &Product{
 		Name:  "grape-lime",
 		Price: 11.99,
+		Glaze: "grapevine-top-orange",
+		// 🧩 try dumb or any input that does not matches
+		// format flavour(any i.e a-z)-top/bottom-filling(any i.e a-z)
 	}
 
 	err := p.Validate()

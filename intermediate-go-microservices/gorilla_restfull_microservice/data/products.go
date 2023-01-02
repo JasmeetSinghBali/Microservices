@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"regexp"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -18,7 +19,7 @@ type Product struct {
 	Name        string  `json:"name" validate:"required"`
 	Description string  `json:"description"`
 	Price       float32 `json:"price" validate:"gt=0"`
-	Glaze       string  `json:"glaze"`
+	Glaze       string  `json:"glaze" validate:"required,glaze"`
 	CreatedOn   string  `json:"-"`
 	UpdatedOn   string  `json:"-"`
 	DeletedOn   string  `json:"-"`
@@ -58,7 +59,26 @@ func (p *Product) FromJSON(r io.Reader) error {
 /*validation method*/
 func (p *Product) Validate() error {
 	validate := validator.New()
+	// ✨register the custom validation function to validate instance via passing
+	// ✨name of the custom validation function & the function to perform the validation
+	validate.RegisterValidation("glaze", validateGlaze)
 	return validate.Struct(p)
+}
+
+func validateGlaze(fl validator.FieldLevel) bool {
+
+	// glaze format flavour(any)-top/bottom-filling(any)
+	re := regexp.MustCompile(`[a-z]+-(top|bottom)+-[a-z]+`)
+
+	// grab the field value and convert to string and then compare with glaze format regex
+	// matches return matched slice of string
+	matches := re.FindAllString(fl.Field().String(), -1)
+
+	// if no match found
+	if len(matches) < 1 {
+		return false
+	}
+	return true
 }
 
 // Products slice of type Product

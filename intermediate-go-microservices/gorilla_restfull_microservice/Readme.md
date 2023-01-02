@@ -26,7 +26,9 @@ reff: https://www.gorillatoolkit.org/
 
 - Essential to prevent top 10 most common OWASP mentioned vulnerability Injections,Broken Auth,sensitive data exposure etc...
 
-- Sanitization inputs from client is always a must
+- Sanitization inputs from client is always a must.
+
+- ✨ custom validation function can also be added for fields that have custom & dynamic possible combination of allowed values ref: Glaze field in data/products.go that has custom validation function validateGlaze reff: https://github.com/go-playground/validator/blob/master/_examples/custom/main.go
 
 > Test ref: https://stackoverflow.com/questions/28240489/golang-testing-no-test-files
 
