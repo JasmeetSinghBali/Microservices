@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"time"
+
+	"github.com/go-playground/validator/v10"
 )
 
 /*
@@ -13,9 +15,9 @@ Product defines the DTO/structure of the API product
 */
 type Product struct {
 	ID          int     `json:"id"`
-	Name        string  `json:"name"`
+	Name        string  `json:"name" validate:"required"`
 	Description string  `json:"description"`
-	Price       float32 `json:"price"`
+	Price       float32 `json:"price" validate:"gt=0"`
 	Glaze       string  `json:"glaze"`
 	CreatedOn   string  `json:"-"`
 	UpdatedOn   string  `json:"-"`
@@ -53,6 +55,13 @@ func (p *Product) FromJSON(r io.Reader) error {
 	return e.Decode(p)
 }
 
+/*validation method*/
+func (p *Product) Validate() error {
+	validate := validator.New()
+	return validate.Struct(p)
+}
+
+// Products slice of type Product
 type Products []*Product
 
 /*
