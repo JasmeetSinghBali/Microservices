@@ -1,3 +1,17 @@
+// Package classification of Product API
+//
+// Documentation for Product API
+//
+// Schemes: http
+// BasePath: /
+// Version: 1.0.0
+//
+// Consumes:
+// - application/json
+//
+// Produces:
+// - application/json
+// swagger:meta
 package handlers
 
 import (
@@ -11,13 +25,31 @@ import (
 	"github.com/gorilla/mux"
 )
 
+/*only for swagger doc response struct usecase*/
+// A list of products returns in the response
+// swagger:response productResponse
+type productsResponse struct {
+	// All products in the system
+	// in: body
+	Body []data.Product
+}
+
 type Products struct {
 	tracer *log.Logger
+}
+
+type GenericError struct {
+	Message string `json:"message"`
 }
 
 func NewProducts(tracer *log.Logger) *Products {
 	return &Products{tracer}
 }
+
+// swagger:route GET /products products listProducts
+// Returns a list of products
+// responses:
+//	200: productsResponse
 
 /*
 restful get products  method on Products handler struct
@@ -36,6 +68,48 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(rw, "Failed to marshal json", http.StatusInternalServerError)
 	}
+}
+
+func getProductID(r *http.Request) int {
+	vars := mux.Vars(r)
+
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		panic(err)
+	}
+
+	return id
+}
+
+/*
+restful get product via id  method on Products handler struct
+*/
+func (p *Products) GetProduct(rw http.ResponseWriter, r *http.Request) {
+	id := getProductID(r)
+	p.tracer.Println("Handle GET Product by ID", id)
+
+	prod, err := data.GetProductByID(id)
+
+	switch err {
+	case nil:
+	case data.ErrProductNotFound:
+		p.tracer.Println("Error fetching product", err)
+		rw.WriteHeader(http.StatusNotFound)
+		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		return
+	default:
+		p.tracer.Println("fetching product", err)
+
+		rw.WriteHeader(http.StatusInternalServerError)
+		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		return
+	}
+
+	err = data.ToJSON(prod, rw)
+	if err != nil {
+		p.tracer.Println("error in serializing product data to json", err)
+	}
+
 }
 
 // Key: value based context http struct

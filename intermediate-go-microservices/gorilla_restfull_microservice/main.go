@@ -26,7 +26,8 @@ func main() {
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 
 	// 📝 now GET routes can be attached to this getRouter sub-router instance
-	getRouter.HandleFunc("/", pl.GetProducts)
+	getRouter.HandleFunc("/products", pl.GetProducts)
+	getRouter.HandleFunc("/products/{id:[0-9]+}", pl.GetProduct)
 
 	// put sub-router instance named putRouter that has PUT type http request associated & mapped to it only
 	putRouter := sm.Methods(http.MethodPut).Subrouter()

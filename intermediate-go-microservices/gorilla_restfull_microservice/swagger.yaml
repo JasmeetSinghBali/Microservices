@@ -1,0 +1,56 @@
+basePath: /
+consumes:
+    - application/json
+definitions:
+    Product:
+        description: |-
+            Donuts
+            Product defines the DTO/structure of the API product
+        properties:
+            description:
+                type: string
+                x-go-name: Description
+            glaze:
+                type: string
+                x-go-name: Glaze
+            id:
+                format: int64
+                type: integer
+                x-go-name: ID
+            name:
+                type: string
+                x-go-name: Name
+            price:
+                format: float
+                type: number
+                x-go-name: Price
+        type: object
+        x-go-package: github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/data
+info:
+    description: Documentation for Product API
+    title: of Product API
+    version: 1.0.0
+paths:
+    /products:
+        get:
+            description: Returns a list of products
+            operationId: listProducts
+            responses:
+                "200":
+                    $ref: '#/responses/productsResponse'
+            tags:
+                - products
+produces:
+    - application/json
+responses:
+    productResponse:
+        description: |-
+            only for swagger doc response struct usecase*/
+            A list of products returns in the response
+        schema:
+            items:
+                $ref: '#/definitions/Product'
+            type: array
+schemes:
+    - http
+swagger: "2.0"

@@ -39,3 +39,21 @@ reff: https://www.gorillatoolkit.org/
             golang extension shows options to run/debug test
             # or cd to directory containing the _test file &
             go test
+
+> Documentation via OPEN API swagger ref: https://goswagger.io/
+
+- first add swagger:meta doc tags as comments as done in handlers/products.go ref:https://goswagger.io/use/spec/meta.html
+- second, install swagger cli & then generate swagger doc
+
+                    # make sure golang must be updated >1.17
+                    choco upgrade golang -y
+                    # make dummy dir
+                    git clone https://github.com/go-swagger/go-swagger
+                    # cd to go-swagger
+                    go install ./cmd/swagger
+                    # cd to gorilla_restfull dir
+                    swagger generate spec -o ./swagger.yaml --scan-models
+                    go run main.go
+                    # curl localhost:PORT/swagger.yaml or visit localhost:PORT/docs
+
+- NOTE: each time when the documentation changes just run swagger generate spec -o ./swagger.yaml --scan-models command

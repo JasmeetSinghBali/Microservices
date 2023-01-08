@@ -52,8 +52,13 @@ a method to the type Product named FromJSON
 to decode json ----> data via NewDecoder
 */
 func (p *Product) FromJSON(r io.Reader) error {
-	e := json.NewDecoder(r)
-	return e.Decode(p)
+	d := json.NewDecoder(r)
+	return d.Decode(p)
+}
+
+func ToJSON(i interface{}, w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(i)
 }
 
 /*validation method*/
@@ -95,6 +100,23 @@ func (p *Products) ToJSON(w io.Writer) error {
 
 func GetProducts() Products {
 	return productList
+}
+
+func findIndexByProductID(id int) int {
+	for i, p := range productList {
+		if p.ID == id {
+			return i
+		}
+	}
+	return -1
+}
+
+func GetProductByID(id int) (*Product, error) {
+	i := findIndexByProductID(id)
+	if id == -1 {
+		return nil, ErrProductNotFound
+	}
+	return productList[i], nil
 }
 
 func getRandomId() int {
