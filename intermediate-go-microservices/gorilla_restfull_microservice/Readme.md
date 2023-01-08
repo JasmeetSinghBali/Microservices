@@ -57,3 +57,7 @@ reff: https://www.gorillatoolkit.org/
                     # curl localhost:PORT/swagger.yaml or visit localhost:PORT/docs
 
 - NOTE: each time when the documentation changes just run swagger generate spec -o ./swagger.yaml --scan-models command
+
+> Serving the swagger doc with swagger-ui for interaction
+
+- first, setup a swagger doc handler ref: main.go via redoc is used to serve the swagger handler ref: https://github.com/Redocly/redoc ref: https://github.com/go-openapi/runtime

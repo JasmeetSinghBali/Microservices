@@ -25,9 +25,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-/*only for swagger doc response struct usecase*/
 // A list of products returns in the response
-// swagger:response productResponse
+// swagger:response productsResponse
 type productsResponse struct {
 	// All products in the system
 	// in: body
@@ -51,9 +50,7 @@ func NewProducts(tracer *log.Logger) *Products {
 // responses:
 //	200: productsResponse
 
-/*
-restful get products  method on Products handler struct
-*/
+// listAll handles GET requests and returns all current products
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 
 	p.tracer.Println("Handle GET Products")

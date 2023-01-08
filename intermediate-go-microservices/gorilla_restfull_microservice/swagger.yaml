@@ -43,10 +43,8 @@ paths:
 produces:
     - application/json
 responses:
-    productResponse:
-        description: |-
-            only for swagger doc response struct usecase*/
-            A list of products returns in the response
+    productsResponse:
+        description: A list of products returns in the response
         schema:
             items:
                 $ref: '#/definitions/Product'

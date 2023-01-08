@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/handlers"
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -40,6 +41,13 @@ func main() {
 	postRouter.HandleFunc("/", pl.AddProduct)
 	// 📝 adding validation middleware to postRouter subrouter that gets executed before the handler
 	postRouter.Use(pl.ProductValidationMiddleware)
+
+	// ✨ redoc is used to serve the swagger handler ref: https://github.com/Redocly/redoc
+	redocOptions := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+	swaggerDocMiddleware := middleware.Redoc(redocOptions, nil)
+	getRouter.Handle("/docs", swaggerDocMiddleware)
+	// ✨ add specific handler to serve swagger.yaml to load and serve it when /docs is hit
+	getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	s := &http.Server{
 		Addr:         "127.0.0.1:5000",
