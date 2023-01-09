@@ -60,28 +60,6 @@ func NewProducts(tracer *log.Logger) *Products {
 	return &Products{tracer}
 }
 
-// swagger:route GET /products products listProducts
-// Returns a list of products
-// responses:
-//	200: productsResponse
-
-// listAll handles GET requests and returns all current products
-func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
-
-	p.tracer.Println("Handle GET Products")
-
-	/*access the method in data package to get product list*/
-	listOfProducts := data.GetProducts()
-
-	/*
-		calls ToJSON , converts data ---> slice of byte to return it to client [marshalling]
-	*/
-	err := listOfProducts.ToJSON(rw)
-	if err != nil {
-		http.Error(rw, "Failed to marshal json", http.StatusInternalServerError)
-	}
-}
-
 func getProductID(r *http.Request) int {
 	vars := mux.Vars(r)
 
@@ -91,37 +69,6 @@ func getProductID(r *http.Request) int {
 	}
 
 	return id
-}
-
-/*
-restful get product via id  method on Products handler struct
-*/
-func (p *Products) GetProduct(rw http.ResponseWriter, r *http.Request) {
-	id := getProductID(r)
-	p.tracer.Println("Handle GET Product by ID", id)
-
-	prod, err := data.GetProductByID(id)
-
-	switch err {
-	case nil:
-	case data.ErrProductNotFound:
-		p.tracer.Println("Error fetching product", err)
-		rw.WriteHeader(http.StatusNotFound)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
-		return
-	default:
-		p.tracer.Println("fetching product", err)
-
-		rw.WriteHeader(http.StatusInternalServerError)
-		data.ToJSON(&GenericError{Message: err.Error()}, rw)
-		return
-	}
-
-	err = data.ToJSON(prod, rw)
-	if err != nil {
-		p.tracer.Println("error in serializing product data to json", err)
-	}
-
 }
 
 /*

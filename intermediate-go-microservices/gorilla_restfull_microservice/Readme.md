@@ -61,3 +61,7 @@ reff: https://www.gorillatoolkit.org/
 > Serving the swagger doc with swagger-ui for interaction
 
 - first, setup a swagger doc handler ref: main.go via redoc is used to serve the swagger handler ref: https://github.com/Redocly/redoc ref: https://github.com/go-openapi/runtime
+
+> Restructuring/Refactoring Code
+
+- ✨ Note- Go compiles code from package at one go even when the package code is distributed in different files, without the need of additional reff the method belonging to same package in file A can be accessed inside of file B provided that both file A & file B belong to package x
