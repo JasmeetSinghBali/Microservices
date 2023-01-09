@@ -2,6 +2,14 @@ basePath: /
 consumes:
     - application/json
 definitions:
+    GenericError:
+        description: generic error returned by the server
+        properties:
+            message:
+                type: string
+                x-go-name: Message
+        type: object
+        x-go-package: github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/handlers
     Product:
         description: |-
             Donuts
@@ -30,6 +38,16 @@ definitions:
             - id
         type: object
         x-go-package: github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/data
+    ValidationError:
+        description: collection/slice of validation error messages of type string
+        properties:
+            messages:
+                items:
+                    type: string
+                type: array
+                x-go-name: Messages
+        type: object
+        x-go-package: github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/handlers
 info:
     description: Documentation for Product API
     title: of Product API
@@ -42,6 +60,18 @@ paths:
             responses:
                 "200":
                     $ref: '#/responses/productsResponse'
+            tags:
+                - products
+        post:
+            description: Create a new product
+            operationId: createProduct
+            responses:
+                "200":
+                    $ref: '#/responses/productResponse'
+                "422":
+                    $ref: '#/responses/errorValidation'
+                "501":
+                    $ref: '#/responses/errorResponse'
             tags:
                 - products
     /products/{id}:
@@ -64,8 +94,20 @@ paths:
 produces:
     - application/json
 responses:
-    noContent:
-        description: ""
+    errorResponse:
+        description: Generic error message returned as string
+        schema:
+            $ref: '#/definitions/GenericError'
+    errorValidation:
+        description: Validation errors defined as an array of strings
+        schema:
+            $ref: '#/definitions/ValidationError'
+    noContentResponse:
+        description: No content is returned when product is deleted
+    productResponse:
+        description: single product returned in the response
+        schema:
+            $ref: '#/definitions/Product'
     productsResponse:
         description: A list of products returns in the response
         schema:

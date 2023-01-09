@@ -38,7 +38,7 @@ func main() {
 	putRouter.Use(pl.ProductValidationMiddleware)
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/", pl.AddProduct)
+	postRouter.HandleFunc("/products", pl.AddProduct)
 	// 📝 adding validation middleware to postRouter subrouter that gets executed before the handler
 	postRouter.Use(pl.ProductValidationMiddleware)
 

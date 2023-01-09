@@ -1,17 +1,3 @@
-// Package classification of Product API
-//
-// Documentation for Product API
-//
-// Schemes: http
-// BasePath: /
-// Version: 1.0.0
-//
-// Consumes:
-// - application/json
-//
-// Produces:
-// - application/json
-// swagger:meta
 package handlers
 
 import (
@@ -28,14 +14,6 @@ import (
 // Key: value based context http struct
 type KeyProduct struct{}
 
-// A list of products returns in the response
-// swagger:response productsResponse
-type productsResponse struct {
-	// All products in the system
-	// in: body
-	Body []data.Product
-}
-
 // swagger:parameters deleteProduct
 type productIDParameterWrapper struct {
 	// The id of the product to be deleted from db
@@ -44,16 +22,18 @@ type productIDParameterWrapper struct {
 	ID int `json:"id"`
 }
 
-// swagger:response noContent
-type productNoContent struct {
-}
-
 type Products struct {
 	tracer *log.Logger
 }
 
+// generic error returned by the server
 type GenericError struct {
 	Message string `json:"message"`
+}
+
+// collection/slice of validation error messages of type string
+type ValidationError struct {
+	Messages []string `json:"messages"`
 }
 
 func NewProducts(tracer *log.Logger) *Products {
@@ -69,24 +49,6 @@ func getProductID(r *http.Request) int {
 	}
 
 	return id
-}
-
-/*
-restful post products method on Products handler struct
-fails - try $ curl localhost:5000/ -X POST -d '{"Name": "New Donut"}'
-pass - try  $ curl localhost:5000/ -X POST -d '{"Name": "New Donut", "Price": 7.99, "Glaze": "strawberry-bottom-vanilla"}'^C
-'
-*/
-func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
-	p.tracer.Println("Handle POST Product")
-
-	// 📝 Grab the unmarshalled product from KeyProduct struct context and store in newProd
-	newProd := r.Context().Value(KeyProduct{}).(data.Product)
-
-	/* %#v will show values & fields both*/
-	p.tracer.Printf("NewProd: %#v", newProd)
-	/*try $ curl -v localhost:5000/products -d '{"id": 10 ,"name":"Something","description": "everything","Price": 0.00, "glaze": "nothing"}'*/
-	data.AddProduct(&newProd)
 }
 
 /*
