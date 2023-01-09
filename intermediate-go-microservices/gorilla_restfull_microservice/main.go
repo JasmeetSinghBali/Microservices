@@ -42,6 +42,9 @@ func main() {
 	// 📝 adding validation middleware to postRouter subrouter that gets executed before the handler
 	postRouter.Use(pl.ProductValidationMiddleware)
 
+	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
+	deleteRouter.HandleFunc("/{id:[0-9]+}", pl.Delete)
+
 	// ✨ redoc is used to serve the swagger handler ref: https://github.com/Redocly/redoc
 	redocOptions := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
 	swaggerDocMiddleware := middleware.Redoc(redocOptions, nil)

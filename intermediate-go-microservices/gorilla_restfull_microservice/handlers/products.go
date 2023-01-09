@@ -25,12 +25,27 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Key: value based context http struct
+type KeyProduct struct{}
+
 // A list of products returns in the response
 // swagger:response productsResponse
 type productsResponse struct {
 	// All products in the system
 	// in: body
 	Body []data.Product
+}
+
+// swagger:parameters deleteProduct
+type productIDParameterWrapper struct {
+	// The id of the product to be deleted from db
+	// in:path
+	// required:true
+	ID int `json:"id"`
+}
+
+// swagger:response noContent
+type productNoContent struct {
 }
 
 type Products struct {
@@ -109,9 +124,6 @@ func (p *Products) GetProduct(rw http.ResponseWriter, r *http.Request) {
 
 }
 
-// Key: value based context http struct
-type KeyProduct struct{}
-
 /*
 restful post products method on Products handler struct
 fails - try $ curl localhost:5000/ -X POST -d '{"Name": "New Donut"}'
@@ -162,6 +174,37 @@ func (p Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "failed to update product", http.StatusInternalServerError)
 		return
 	}
+}
+
+// swagger:route DELETE /products/{id} products deleteProduct
+// Returns a list of products
+// responses:
+//	201: noContent
+
+// Delete/Remove a product from DB via id
+func (p *Products) Delete(rw http.ResponseWriter, r *http.Request) {
+	id := getProductID(r)
+
+	p.tracer.Println("deleting record id", id)
+
+	err := data.DeleteProduct(id)
+	if err == data.ErrProductNotFound {
+		p.tracer.Println("deleting record id does not exist")
+
+		rw.WriteHeader(http.StatusNotFound)
+		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		return
+	}
+
+	if err != nil {
+		p.tracer.Println("deleting record", err)
+
+		rw.WriteHeader(http.StatusInternalServerError)
+		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		return
+	}
+
+	rw.WriteHeader(http.StatusNoContent)
 }
 
 /*

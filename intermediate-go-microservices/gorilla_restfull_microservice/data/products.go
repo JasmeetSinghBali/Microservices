@@ -15,6 +15,10 @@ Donuts
 Product defines the DTO/structure of the API product
 */
 type Product struct {
+	// the id of the user
+	//
+	// required: true
+	// min: 1
 	ID          int     `json:"id"`
 	Name        string  `json:"name" validate:"required"`
 	Description string  `json:"description"`
@@ -150,5 +154,14 @@ func UpdateProduct(id int, p *Product) error {
 	p.ID = id
 	productList[pos] = p
 
+	return nil
+}
+
+func DeleteProduct(id int) error {
+	i := findIndexByProductID(id)
+	if i == -1 {
+		return ErrProductNotFound
+	}
+	productList = append(productList[:i], productList[i+1])
 	return nil
 }
