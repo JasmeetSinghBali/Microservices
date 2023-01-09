@@ -74,9 +74,21 @@ paths:
                     $ref: '#/responses/errorResponse'
             tags:
                 - products
+        put:
+            description: Update a product via id
+            operationId: updateProduct
+            responses:
+                "201":
+                    $ref: '#/responses/noContentReponse'
+                "404":
+                    $ref: '#/responses/errorResponse'
+                "422":
+                    $ref: '#/responses/errorValidation'
+            tags:
+                - products
     /products/{id}:
         delete:
-            description: Returns a list of products
+            description: Delete a product via id
             operationId: deleteProduct
             parameters:
                 - description: The id of the product to be deleted from db
@@ -88,7 +100,11 @@ paths:
                   x-go-name: ID
             responses:
                 "201":
-                    $ref: '#/responses/noContent'
+                    $ref: '#/responses/noContentResponse'
+                "404":
+                    $ref: '#/responses/errorResponse'
+                "501":
+                    $ref: '#/responses/errorResponse'
             tags:
                 - products
 produces:
@@ -103,7 +119,7 @@ responses:
         schema:
             $ref: '#/definitions/ValidationError'
     noContentResponse:
-        description: No content is returned when product is deleted
+        description: No content is returned when product is updated or deleted
     productResponse:
         description: single product returned in the response
         schema:

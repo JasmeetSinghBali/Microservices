@@ -18,13 +18,15 @@
 
 - [DOCKER] basics to Intermediate Snippet/boilerplate ref: https://github.com/Jasmeet-1998/Microservices/tree/master/microservices_docker_basics
 
-- Go [MICROSERVICES-basics](https://github.com/Jasmeet-1998/Microservices/tree/master/core-basics-go-microservices)
+- Go [barebones] [MICROSERVICES-basics](https://github.com/Jasmeet-1998/Microservices/tree/master/core-basics-go-microservices)
+
+- Go [standard-libs] [MICROSERVICES-restful-api](https://github.com/Jasmeet-1998/Microservices/tree/master/intermediate-go-microservices/product-api)
 
 **Intermediate**
 
 - [MICROSERVICES+DOCKER] Dev+Prod Dockerize your app approach with example setup with stack Node+express+mongo+redis ref: https://github.com/Jasmeet-1998/Microservices/tree/master/building_microservice_hands_on_intermediate
 
-- Go [MICROSERVICES-restful-api](https://github.com/Jasmeet-1998/Microservices/tree/master/intermediate-go-microservices/product-api)
+- Go [Gorilla-web-toolkit] [Gorilla-restful-api](https://github.com/Jasmeet-1998/Microservices/tree/master/intermediate-go-microservices/gorilla_restfull_microservice)
 
 **Advanced**
 

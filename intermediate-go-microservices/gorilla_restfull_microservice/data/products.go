@@ -144,15 +144,14 @@ func findProduct(id int) (*Product, int, error) {
 	return nil, -1, ErrProductNotFound
 }
 
-func UpdateProduct(id int, p *Product) error {
-	_, pos, err := findProduct(id)
+func UpdateProduct(p Product) error {
+	i := findIndexByProductID(p.ID)
 
-	if err != nil {
-		return err
+	if i == -1 {
+		return ErrProductNotFound
 	}
 
-	p.ID = id
-	productList[pos] = p
+	productList[i] = &p
 
 	return nil
 }

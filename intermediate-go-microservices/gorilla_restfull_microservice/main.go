@@ -33,7 +33,7 @@ func main() {
 	// put sub-router instance named putRouter that has PUT type http request associated & mapped to it only
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
 	// 📝 the route attached has id as param which is regex 0-9 and can be 1 or more & gets auto extracted by gorilla router
-	putRouter.HandleFunc("/{id:[0-9]+}", pl.UpdateProducts)
+	putRouter.HandleFunc("/products", pl.UpdateProduct)
 	// 📝 adding validation middleware to putRouter subrouter that gets executed before the handler
 	putRouter.Use(pl.ProductValidationMiddleware)
 

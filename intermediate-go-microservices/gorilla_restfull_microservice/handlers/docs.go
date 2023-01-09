@@ -54,7 +54,7 @@ type productResponse struct {
 	Body data.Product
 }
 
-// No content is returned when product is deleted
+// No content is returned when product is updated or deleted
 // swagger:response noContentResponse
 type noContentResponseWrapper struct {
 }
