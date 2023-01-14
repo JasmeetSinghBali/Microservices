@@ -31,11 +31,6 @@ type GenericError struct {
 	Message string `json:"message"`
 }
 
-// collection/slice of validation error messages of type string
-type ValidationError struct {
-	Messages []string `json:"messages"`
-}
-
 func NewProducts(tracer *log.Logger) *Products {
 	return &Products{tracer}
 }

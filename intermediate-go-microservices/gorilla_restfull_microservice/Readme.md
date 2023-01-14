@@ -65,3 +65,13 @@ reff: https://www.gorillatoolkit.org/
 > Restructuring/Refactoring Code
 
 - ✨ Note- Go compiles code from package at one go even when the package code is distributed in different files, without the need of additional reff the method belonging to same package in file A can be accessed inside of file B provided that both file A & file B belong to package x
+
+> Misc
+
+- interfaces in golang describes the custom type that is used to specify 1 or more mthod signatures.
+
+- interfaces in golang allows to create a variable of this interface but no instance
+
+- ✨ in short interface in golang is collection of methods as well as custom types
+
+ref: https://go.dev/tour/methods/9
