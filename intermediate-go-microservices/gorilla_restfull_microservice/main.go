@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/data"
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/handlers"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
@@ -16,8 +17,10 @@ import (
 func main() {
 
 	gl := log.New(os.Stdout, "Product-api", log.LstdFlags)
+	gv := data.NewValidation()
 
-	pl := handlers.NewProducts(gl)
+	// instantiate handler wid new logger & validator instance respectively
+	pl := handlers.NewProducts(gl, gv)
 
 	// create a serve mux via gorilla web toolkit (Package- gorilla/mux)
 	sm := mux.NewRouter()

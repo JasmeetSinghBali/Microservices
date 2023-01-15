@@ -9,7 +9,7 @@ import (
 // swagger:route GET /products products listProducts
 // Returns a list of products
 // responses:
-//	200: productsResponse
+//		200: productsResponse
 
 // restful get all products method on Products handler struct
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
@@ -27,6 +27,12 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Failed to marshal json", http.StatusInternalServerError)
 	}
 }
+
+// swagger:route GET /products/{id} products listSingle
+// Returns a single product from DB
+// responses:
+//		200: productResponse
+//		404: errorResponse
 
 // restful get product via id  method on Products handler struct
 func (p *Products) GetProduct(rw http.ResponseWriter, r *http.Request) {

@@ -16,9 +16,13 @@ definitions:
             Product defines the DTO/structure of the API product
         properties:
             description:
+                description: the description for the product
+                maxLength: 10000
                 type: string
                 x-go-name: Description
             glaze:
+                description: the glaze for the product/donut
+                pattern: '[a-z]+-(top|bottom)+-[a-z]+'
                 type: string
                 x-go-name: Glaze
             id:
@@ -28,18 +32,24 @@ definitions:
                 type: integer
                 x-go-name: ID
             name:
+                description: the name for the product
+                maxLength: 255
                 type: string
                 x-go-name: Name
             price:
+                description: the price for the product
                 format: float
+                minimum: 0.01
                 type: number
                 x-go-name: Price
         required:
             - id
+            - name
+            - price
+            - glaze
         type: object
         x-go-package: github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/data
     ValidationError:
-        description: collection/slice of validation error messages of type string
         properties:
             messages:
                 items:
@@ -65,6 +75,15 @@ paths:
         post:
             description: Create a new product
             operationId: createProduct
+            parameters:
+                - description: |-
+                    Product data structure to Update or Create.
+                    Note: the id field is ignored by update and create operations
+                  in: body
+                  name: Body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/Product'
             responses:
                 "200":
                     $ref: '#/responses/productResponse'
@@ -77,6 +96,15 @@ paths:
         put:
             description: Update a product via id
             operationId: updateProduct
+            parameters:
+                - description: |-
+                    Product data structure to Update or Create.
+                    Note: the id field is ignored by update and create operations
+                  in: body
+                  name: Body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/Product'
             responses:
                 "201":
                     $ref: '#/responses/noContentReponse'
@@ -104,6 +132,16 @@ paths:
                 "404":
                     $ref: '#/responses/errorResponse'
                 "501":
+                    $ref: '#/responses/errorResponse'
+            tags:
+                - products
+        get:
+            description: Returns a single product from DB
+            operationId: listSingle
+            responses:
+                "200":
+                    $ref: '#/responses/productResponse'
+                "404":
                     $ref: '#/responses/errorResponse'
             tags:
                 - products

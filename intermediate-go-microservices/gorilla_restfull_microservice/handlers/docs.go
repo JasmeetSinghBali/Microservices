@@ -40,7 +40,7 @@ type errorValidationWrapper struct {
 
 // A list of products returns in the response
 // swagger:response productsResponse
-type productsResponse struct {
+type productsResponseWrapper struct {
 	// All products in the system
 	// in: body
 	Body []data.Product
@@ -48,7 +48,7 @@ type productsResponse struct {
 
 // single product returned in the response
 // swagger:response productResponse
-type productResponse struct {
+type productResponseWrapper struct {
 	// All products in the system
 	// in: body
 	Body data.Product
@@ -57,4 +57,21 @@ type productResponse struct {
 // No content is returned when product is updated or deleted
 // swagger:response noContentResponse
 type noContentResponseWrapper struct {
+}
+
+// swagger:parameters updateProduct createProduct
+type productParamsWrapper struct {
+	// Product data structure to Update or Create.
+	// Note: the id field is ignored by update and create operations
+	// in: body
+	// required: true
+	Body data.Product
+}
+
+// swagger:parameters deleteProduct
+type productIDParameterWrapper struct {
+	// The id of the product to be deleted from db
+	// in:path
+	// required:true
+	ID int `json:"id"`
 }

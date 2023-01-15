@@ -7,23 +7,47 @@ import (
 	"time"
 )
 
+var ErrProductNotFound = fmt.Errorf("Product not found")
+
 /*
 Donuts
 Product defines the DTO/structure of the API product
 */
+// swagger:model
 type Product struct {
+
 	// the id of the user
 	//
 	// required: true
 	// min: 1
-	ID          int     `json:"id"`
-	Name        string  `json:"name" validate:"required"`
-	Description string  `json:"description"`
-	Price       float32 `json:"price" validate:"gt=0"`
-	Glaze       string  `json:"glaze" validate:"required,glaze"`
-	CreatedOn   string  `json:"-"`
-	UpdatedOn   string  `json:"-"`
-	DeletedOn   string  `json:"-"`
+	ID int `json:"id"` // unique indentifier for the product
+
+	// the name for the product
+	//
+	// required: true
+	// max length: 255
+	Name string `json:"name" validate:"required"`
+
+	//the description for the product
+	//
+	// required: false
+	// maxLength: 10000
+	Description string `json:"description"`
+
+	//the price for the product
+	//
+	// required: true
+	// min: 0.01
+	Price float32 `json:"price" validate:"required,gt=0"`
+
+	//the glaze for the product/donut
+	//
+	// required: true
+	// pattern: [a-z]+-(top|bottom)+-[a-z]+
+	Glaze     string `json:"glaze" validate:"required,glaze"`
+	CreatedOn string `json:"-"`
+	UpdatedOn string `json:"-"`
+	DeletedOn string `json:"-"`
 }
 
 /*sample simulated Stubs, how a product list will look like in DB*/
@@ -90,8 +114,6 @@ func AddProduct(p *Product) {
 	p.ID = getRandomId()
 	productList = append(productList, p)
 }
-
-var ErrProductNotFound = fmt.Errorf("Product not found")
 
 func findProduct(id int) (*Product, int, error) {
 	for i, p := range productList {

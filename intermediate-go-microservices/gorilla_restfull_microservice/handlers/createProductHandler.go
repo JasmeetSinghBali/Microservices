@@ -10,9 +10,9 @@ import (
 // Create a new product
 //
 // responses:
-//	200: productResponse
-// 422: errorValidation
-// 501: errorResponse
+//		200: productResponse
+// 		422: errorValidation
+// 		501: errorResponse
 
 //restful post products method on Products handler struct
 /*fails - try $ curl localhost:5000/ -X POST -d '{"Name": "New Donut"}'

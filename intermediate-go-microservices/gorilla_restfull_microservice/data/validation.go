@@ -66,7 +66,8 @@ func (v *Validation) Validate(i interface{}) ValidationErrors {
 	return returnErrs
 }
 
-func validateGlaze(fl validator.FieldValue) bool {
+// validate glaze on donut
+func validateGlaze(fl validator.FieldLevel) bool {
 	// glaze format flavour(any)-top/bottom-filling(any)
 	re := regexp.MustCompile(`[a-z]+-(top|bottom)+-[a-z]+`)
 
