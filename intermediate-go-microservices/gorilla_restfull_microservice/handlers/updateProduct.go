@@ -10,9 +10,9 @@ import (
 // Update a product via id
 //
 // responses:
-// 		201: noContentReponse
-// 		404: errorResponse
-// 		422: errorValidation
+// 		201: noContentResponse
+//  404: errorResponse
+//  422: errorValidation
 
 // restful update product method on Products handler struct
 // try curl localhost:5000/1 -X PUT -d '{"name": "Choc-o-Moc"}'

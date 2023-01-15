@@ -8,10 +8,11 @@ import (
 
 // swagger:route DELETE /products/{id} products deleteProduct
 // Delete a product via id
+//
 // responses:
-//	201: noContentResponse
-// 404: errorResponse
-// 501: errorResponse
+//		201: noContentResponse
+//  404: errorResponse
+//  501: errorResponse
 
 // restful delete product via id method on Products handler struct
 func (p *Products) Delete(rw http.ResponseWriter, r *http.Request) {

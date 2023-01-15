@@ -75,3 +75,20 @@ reff: https://www.gorillatoolkit.org/
 - ✨ in short interface in golang is collection of methods as well as custom types
 
 ref: https://go.dev/tour/methods/9
+
+> IMP: generating http clients from swagger doc for interportability (via swagger codegen)
+
+- reff: https://goswagger.io/generate/client.html
+- reff the client dir
+
+- to generate client
+
+```bash
+
+cd client
+# swagger cli help
+swagger generate --help
+#client command help
+swagger generate client --help
+swagger generate client -f ../swagger.yaml -A gorilla-restapi
+```

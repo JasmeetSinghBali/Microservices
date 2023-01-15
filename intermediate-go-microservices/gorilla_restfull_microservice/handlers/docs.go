@@ -56,8 +56,7 @@ type productResponseWrapper struct {
 
 // No content is returned when product is updated or deleted
 // swagger:response noContentResponse
-type noContentResponseWrapper struct {
-}
+type noContentResponseWrapper struct{}
 
 // swagger:parameters updateProduct createProduct
 type productParamsWrapper struct {
@@ -68,7 +67,7 @@ type productParamsWrapper struct {
 	Body data.Product
 }
 
-// swagger:parameters deleteProduct
+// swagger:parameters listSingleProduct deleteProduct
 type productIDParameterWrapper struct {
 	// The id of the product to be deleted from db
 	// in:path
