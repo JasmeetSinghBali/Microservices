@@ -11,9 +11,12 @@ import (
 // while the go server is running on 5000, to change/over-ride the default dial target
 // ✨ reff: gorilla_restapi_client.go in client/client/ dir WithHost & TransportConfig
 func TestGeneratedClient(t *testing.T) {
-	c := client.Default
-	params := products.NewListProductsParams()
 
+	// overiding transport config to change the dialed target via http client to go server
+	cfg := client.DefaultTransportConfig().WithHost("localhost:5000")
+	c := client.NewHTTPClientWithConfig(nil, cfg)
+
+	params := products.NewListProductsParams()
 	// ref: products_client.go inside client/client generated http client
 	// ✨calls ListProducts method on Products with params from NewListProductParams
 	prod, err := c.Products.ListProducts(params)
@@ -22,5 +25,8 @@ func TestGeneratedClient(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	fmt.Println(prod)
+	// printing out response products from /products api call tested ✔
+	fmt.Printf("%#v", prod.GetPayload()[0])
+	fmt.Printf("%#v", prod.GetPayload()[1])
+	t.Fail()
 }

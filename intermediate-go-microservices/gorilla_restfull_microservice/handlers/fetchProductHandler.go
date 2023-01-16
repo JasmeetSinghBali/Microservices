@@ -16,6 +16,10 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 
 	p.tracer.Println("Handle GET Products")
 
+	// ✨ add header application/json for client generated swagger http test to run
+	// can be checked via curl -v localhost:5000/products
+	rw.Header().Add("Content-Type", "application/json")
+
 	/*access the method in data package to get product list*/
 	listOfProducts := data.GetProducts()
 
