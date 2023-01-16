@@ -3,7 +3,11 @@ module github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/goril
 go 1.16
 
 require (
+	github.com/go-openapi/errors v0.20.2
 	github.com/go-openapi/runtime v0.25.0
+	github.com/go-openapi/strfmt v0.21.2
+	github.com/go-openapi/swag v0.21.1
+	github.com/go-openapi/validate v0.21.0
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/gorilla/mux v1.8.0
