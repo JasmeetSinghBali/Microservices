@@ -11,6 +11,7 @@ import (
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/data"
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/gorilla_restfull_microservice/handlers"
 	"github.com/go-openapi/runtime/middleware"
+	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -55,9 +56,15 @@ func main() {
 	// ✨ add specific handler to serve swagger.yaml to load and serve it when /docs is hit
 	getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
+	// 📝 CORS, cors handler ch
+	// allowing localhost:3000 where frontend (in react) is running on
+	// 💡 for public api mention []string["*"] wild card to allow request from anywhere
+	// ✨ if cookies is used for authentication then access-control-allow-credentials:true should be added
+	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
+
 	s := &http.Server{
 		Addr:         "127.0.0.1:5000",
-		Handler:      sm,
+		Handler:      ch(sm), // wrap the entire serve mux with the cors handler to allow only 3000 to make request to go api at 5000
 		ErrorLog:     gl,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,

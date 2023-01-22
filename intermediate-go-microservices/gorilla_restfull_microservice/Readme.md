@@ -92,3 +92,7 @@ swagger generate --help
 swagger generate client --help
 swagger generate client -f ../swagger.yaml -A gorilla-restapi
 ```
+
+> Handling CORS in gorilla via configuring the preflight request
+
+reff: https://github.com/gorilla/handlers/blob/master/cors.go
