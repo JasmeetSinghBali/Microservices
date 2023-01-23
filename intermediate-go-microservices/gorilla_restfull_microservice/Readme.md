@@ -91,8 +91,15 @@ swagger generate --help
 #client command help
 swagger generate client --help
 swagger generate client -f ../swagger.yaml -A gorilla-restapi
+
 ```
 
 > Handling CORS in gorilla via configuring the preflight request
 
 reff: https://github.com/gorilla/handlers/blob/master/cors.go
+
+> Misc Resources
+
+- sqlx kinda orm golang sql DB ref:https://github.com/jmoiron/sqlx
+- postgres https://github.com/go-pg/pg
+- GOORM
