@@ -35,6 +35,14 @@ func main() {
 	ph := sm.Methods(http.MethodPost).Subrouter()
 	ph.HandleFunc("/files/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServeHTTP)
 
+	// get files from server on client request
+	gh := sm.Methods(http.MethodGet).Subrouter()
+	// specifying predefined FileServer reff: https://pkg.go.dev/net/http#FileServer
+	gh.Handle(
+		"/files/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}",
+		http.StripPrefix("/files/", http.FileServer(http.Dir("./imagestore"))),
+	)
+
 	// create a new server
 	s := http.Server{
 		Addr:         "127.0.0.1:5000",  // configure the bind address
