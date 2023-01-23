@@ -63,7 +63,7 @@ func (l *Local) Save(path string, contents io.Reader) error {
 	}
 	defer f.Close()
 
-	// write contents to new file, with max size limit check
+	// write contents to new file, with max size limit check can be done via buffer reader comparing with loop overed content length manually NOTE- content-length header must never be trusted
 	_, err = io.Copy(f, contents)
 	if err != nil {
 		return xerrors.Errorf("Unable to write contents to the file: %w", err)

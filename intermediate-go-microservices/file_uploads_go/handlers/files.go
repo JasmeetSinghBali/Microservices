@@ -20,6 +20,7 @@ func NewFiles(s files.Storage, l *log.Logger) *Files {
 	return &Files{store: s, tracer: l}
 }
 
+// try curl localhost:5000/files/1/test.png --data-binary @test.png
 // method- ServeHTTP to Files struct, to implement http.Handler interface
 func (f *Files) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
