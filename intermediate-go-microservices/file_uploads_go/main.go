@@ -32,16 +32,8 @@ func main() {
 	sm := mux.NewRouter()
 
 	// filename regex: {filename:[a-zA-Z]+\\.[a-z]{3}}
-	// problem with FileServer is that it is dumb
 	ph := sm.Methods(http.MethodPost).Subrouter()
-	ph.HandleFunc("/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServeHTTP)
-
-	// get files
-	gh := sm.Methods(http.MethodGet).Subrouter()
-	gh.Handle(
-		"/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}",
-		http.StripPrefix("/images/", http.FileServer(http.Dir("./imagestore"))),
-	)
+	ph.HandleFunc("/files/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServeHTTP)
 
 	// create a new server
 	s := http.Server{
@@ -55,7 +47,7 @@ func main() {
 
 	// start the server
 	go func() {
-		gl.Println("Starting server", "bind_address", "./imagestore")
+		gl.Println("Starting server at 5000 with", "fileUploadDir", "./imagestore")
 
 		err := s.ListenAndServe()
 		if err != nil {
