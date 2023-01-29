@@ -2,27 +2,39 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
-}
-
-type User {
-  id: ID!
-  name: String!
+type DonutHub {
+  _id: ID! # where ! signifies non-nullable
+  title: String!
+  description: String!
+  shop_location: String!
+  bestselling: String!
+  price_bestselling: Int!
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
+  hubs: [DonutHub!]! # array of donut hub listing to get > 1 i.e all hubs
+  hub(id: ID!): DonutHub! # to get 1 donut hub by id
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createDonutHub(input: CreateDonutHubInput!): DonutHub!
+  updateDonutHub(id: ID!, input: UpdateDonutHubInput!): DonutHub!
+  deleteDonutHub(id: ID!): DeleteDonutHubResponse!
+}
+
+input CreateDonutHubInput {
+  title: String!
+  description: String!
+  shop_location: String!
+  bestselling: String!
+  price_bestselling: Int!
+}
+
+input UpdateDonutHubInput {
+  bestselling: String!
+  price_bestselling: Int!
+}
+
+type DeleteDonutHubResponse {
+  deleteHubId: String!
 }

@@ -11,14 +11,29 @@ import (
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/graphql_mongodb_go/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// CreateDonutHub is the resolver for the createDonutHub field.
+func (r *mutationResolver) CreateDonutHub(ctx context.Context, input model.CreateDonutHubInput) (*model.DonutHub, error) {
+	panic(fmt.Errorf("not implemented: CreateDonutHub - createDonutHub"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// UpdateDonutHub is the resolver for the updateDonutHub field.
+func (r *mutationResolver) UpdateDonutHub(ctx context.Context, id string, input model.UpdateDonutHubInput) (*model.DonutHub, error) {
+	panic(fmt.Errorf("not implemented: UpdateDonutHub - updateDonutHub"))
+}
+
+// DeleteDonutHub is the resolver for the deleteDonutHub field.
+func (r *mutationResolver) DeleteDonutHub(ctx context.Context, id string) (*model.DeleteDonutHubResponse, error) {
+	panic(fmt.Errorf("not implemented: DeleteDonutHub - deleteDonutHub"))
+}
+
+// Hubs is the resolver for the hubs field.
+func (r *queryResolver) Hubs(ctx context.Context) ([]*model.DonutHub, error) {
+	panic(fmt.Errorf("not implemented: Hubs - hubs"))
+}
+
+// Hub is the resolver for the hub field.
+func (r *queryResolver) Hub(ctx context.Context, id string) (*model.DonutHub, error) {
+	panic(fmt.Errorf("not implemented: Hub - hub"))
 }
 
 // Mutation returns MutationResolver implementation.
