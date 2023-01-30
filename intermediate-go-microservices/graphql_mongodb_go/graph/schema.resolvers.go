@@ -6,34 +6,36 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/graphql_mongodb_go/graph/model"
+	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/graphql_mongodb_go/repository"
 )
+
+var db = repository.Connect()
 
 // CreateDonutHub is the resolver for the createDonutHub field.
 func (r *mutationResolver) CreateDonutHub(ctx context.Context, input model.CreateDonutHubInput) (*model.DonutHub, error) {
-	panic(fmt.Errorf("not implemented: CreateDonutHub - createDonutHub"))
+	return db.CreateDonutHub(input), nil
 }
 
 // UpdateDonutHub is the resolver for the updateDonutHub field.
 func (r *mutationResolver) UpdateDonutHub(ctx context.Context, id string, input model.UpdateDonutHubInput) (*model.DonutHub, error) {
-	panic(fmt.Errorf("not implemented: UpdateDonutHub - updateDonutHub"))
+	return db.UpdateDonutHub(id, input), nil
 }
 
 // DeleteDonutHub is the resolver for the deleteDonutHub field.
 func (r *mutationResolver) DeleteDonutHub(ctx context.Context, id string) (*model.DeleteDonutHubResponse, error) {
-	panic(fmt.Errorf("not implemented: DeleteDonutHub - deleteDonutHub"))
+	return db.DeleteDonutHub(id), nil
 }
 
 // Hubs is the resolver for the hubs field.
 func (r *queryResolver) Hubs(ctx context.Context) ([]*model.DonutHub, error) {
-	panic(fmt.Errorf("not implemented: Hubs - hubs"))
+	return db.GetHubs(), nil
 }
 
 // Hub is the resolver for the hub field.
 func (r *queryResolver) Hub(ctx context.Context, id string) (*model.DonutHub, error) {
-	panic(fmt.Errorf("not implemented: Hub - hub"))
+	return db.GetHub(id), nil
 }
 
 // Mutation returns MutationResolver implementation.
