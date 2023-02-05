@@ -10,6 +10,7 @@ import (
 
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/file_uploads_go/files"
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/file_uploads_go/handlers"
+	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -31,9 +32,15 @@ func main() {
 	// create a new serve mux and register the handlers
 	sm := mux.NewRouter()
 
+	// cors handler
+	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
+
+	// upload files
 	// filename regex: {filename:[a-zA-Z]+\\.[a-z]{3}}
 	ph := sm.Methods(http.MethodPost).Subrouter()
-	ph.HandleFunc("/files/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServeHTTP)
+	ph.HandleFunc("/files/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.UploadREST)
+	// 💡 to handle multipart form data
+	ph.HandleFunc("/", fh.UploadMultiPart)
 
 	// get files from server on client request
 	gh := sm.Methods(http.MethodGet).Subrouter()
@@ -46,7 +53,7 @@ func main() {
 	// create a new server
 	s := http.Server{
 		Addr:         "127.0.0.1:5000",  // configure the bind address
-		Handler:      sm,                // set the default handler
+		Handler:      ch(sm),            // set the default handler
 		ErrorLog:     gl,                // the logger for the server
 		ReadTimeout:  5 * time.Second,   // max time to read request from the client
 		WriteTimeout: 10 * time.Second,  // max time to write response to the client

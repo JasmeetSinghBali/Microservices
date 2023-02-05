@@ -12,3 +12,17 @@
 - FileServer automatically determines the content length & wraps the content of file in response stream
 
 - FileServer expects a http.Dir , Dir gives the location of file on file system i.e uri path ---> file dir system
+
+> Handling multipart form data in Go with net/http core pkg
+
+- reff: https://pkg.go.dev/net/http#Request.ParseForm
+- ParseMultiFormData is the key reff: https://pkg.go.dev/net/http#Request.ParseMultipartForm
+
+```bash
+#bare-min-sample multipart form
+<form action="http://localhost:3000" method="post" enctype="multipart/form-data">
+    <input type="text" name="id" value="">
+    <input type="file" name="file">
+    <button type="submit">Submit</button>
+</form>
+```
