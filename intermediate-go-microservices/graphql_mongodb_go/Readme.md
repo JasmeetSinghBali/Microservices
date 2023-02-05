@@ -70,4 +70,48 @@ mutation CreateDonutHub($input: CreateDonutHubInput!){
   }
 }
 
+#GetHub
+query GetHub($id: ID!){
+  hub(id:$id){
+    _id
+    title
+    description
+    shop_location
+    bestselling
+    price_bestselling
+  }
+}
+{
+  "id": "63df6b266c30f4c40afa35ae"
+}
+
+#UpdateDonutHub
+mutation UpdateDonutHub($id: ID!,$input: UpdateDonutHubInput!) {
+  updateDonutHub(id:$id,input:$input){
+    _id
+    title
+    description
+    shop_location
+    bestselling
+    price_bestselling
+	}
+}
+{
+  "id": "63df6b266c30f4c40afa35ae",
+  "input": {
+    "bestselling": "Mocha-Founds",
+    "price_bestselling": 34
+  }
+}
+
+#DeleteHub
+mutation DeleteHub($id: ID!) {
+  deleteDonutHub(id:$id){
+    deleteHubId
+  }
+}
+{
+  "id": "63df6b266c30f4c40afa35ae"
+}
+
 ```
