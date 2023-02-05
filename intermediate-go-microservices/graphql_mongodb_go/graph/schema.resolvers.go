@@ -11,8 +11,6 @@ import (
 	"github.com/Jasmeet-1998/Microservices/intermediate-go-microservices/graphql_mongodb_go/repository"
 )
 
-var db = repository.Connect()
-
 // CreateDonutHub is the resolver for the createDonutHub field.
 func (r *mutationResolver) CreateDonutHub(ctx context.Context, input model.CreateDonutHubInput) (*model.DonutHub, error) {
 	return db.CreateDonutHub(input), nil
@@ -46,3 +44,11 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//     it when you're done.
+//   - You have helper methods in this file. Move them out to keep these resolver files clean.
+var db = repository.Connect()

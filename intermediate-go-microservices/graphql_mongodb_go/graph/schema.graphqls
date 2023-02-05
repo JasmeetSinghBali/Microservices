@@ -31,8 +31,8 @@ input CreateDonutHubInput {
 }
 
 input UpdateDonutHubInput {
-  bestselling: String!
-  price_bestselling: Int!
+  bestselling: String
+  price_bestselling: Int
 }
 
 type DeleteDonutHubResponse {

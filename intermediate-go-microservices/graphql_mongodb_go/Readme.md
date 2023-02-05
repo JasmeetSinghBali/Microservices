@@ -31,3 +31,43 @@ schema.graphqls is that file
 go run github.com/99designs/gqlgen generate
 
 ```
+
+> test in Graphiql playground :8080
+
+```bash
+
+#GetAllHubs
+query GetAllHubs{
+  hubs{
+    _id
+    title
+    description
+    shop_location
+    bestselling
+    price_bestselling
+  }
+}
+
+#CreateDonutHub
+mutation CreateDonutHub($input: CreateDonutHubInput!){
+  createDonutHub(input:$input){
+    _id
+    title
+    description
+    shop_location
+    bestselling
+    price_bestselling
+  }
+}
+
+{
+  "input": {
+    "title": "LiciousDonuts",
+    "description": "some random desc",
+    "shop_location": "Pluto",
+    "bestselling": "Choco-glazed with strawberry frosting",
+    "price_bestselling": 51.00
+  }
+}
+
+```

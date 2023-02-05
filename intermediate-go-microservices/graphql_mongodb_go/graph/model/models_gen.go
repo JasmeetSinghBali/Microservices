@@ -24,6 +24,6 @@ type DonutHub struct {
 }
 
 type UpdateDonutHubInput struct {
-	Bestselling      string `json:"bestselling"`
-	PriceBestselling int    `json:"price_bestselling"`
+	Bestselling      *string `json:"bestselling"`
+	PriceBestselling *int    `json:"price_bestselling"`
 }
