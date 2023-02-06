@@ -1,19 +1,18 @@
 syntax = "proto3";
 
-option go_package = "./protos";
+option go_package = "fiat";
 
-// fiat service with methods- 
 service Fiat {
     rpc GetRate(FiatRateRequest) returns (FiatRateResponse);
 }
 
-// ClientRequest i.e InputMessage Format
+// request message format
 message FiatRateRequest {
-    string BaseCurrency = 1;
-    string DestinationCurrency = 2; 
+    string Base = 1;
+    string Destination = 2;
 }
 
-// GRPCResponse i.e Return/OutputMessage format
+// response message format
 message FiatRateResponse {
-    float Rate = 1; //index position inside the binary protocol
+    float rate = 1;
 }

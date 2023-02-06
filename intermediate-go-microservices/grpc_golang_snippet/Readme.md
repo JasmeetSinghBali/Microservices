@@ -50,8 +50,14 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 
 # navigate to grpc_golang_snippet
 # generate code file, mention the input and the out code go file
-protoc -I protos/ protos/fiat.proto --go-grpc_out=protos
+protoc -I protos/ protos/fiat.proto --go-grpc_out=fiat
 
 ```
 
 - grpc package https://pkg.go.dev/google.golang.org/grpc maintained by google
+
+- **📝the generated .pb.go file has interface declared as per .proto file, the server interface on basis of service declared in .proto file needs to be implemented.**
+
+- **📝✨For comparison with JSON based approach, the example snippet here FiatServer interface in .pb.go compares with handler & grpc.Server as http server in RegisteryFiatServer that maps the interface implementation with the Fiat service, To sum up it is similar to mapping routes to server in JSON and service interface implementation to the grpc registery interface**
+
+🎈 Need To Refactor a/c to this-> https://grpc.io/docs/languages/go/basics/
