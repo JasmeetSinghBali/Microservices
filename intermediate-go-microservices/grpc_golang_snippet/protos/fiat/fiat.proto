@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+// fiat service with methods- 
+service "Fiat" {
+    rpc: GetRate(FiatRateRequest) returns (FiatRateResponse);
+}
+
+// ClientRequest i.e InputMessage Format
+message FiatRateRequest {
+    string BaseCurrency = 1;
+    string DestinationCurrency = 2; 
+}
+
+// GRPCResponse i.e Return/OutputMessage format
+message FiatRateResponse {
+    float Rate = 1; //index position inside the binary protocol
+}
