@@ -1,0 +1,16 @@
+# kubernets pod resources config [promotheus,grafana]
+prometheus:
+  alertmanager:
+    enabled: false
+
+  pushgateway:
+    enabled: false
+
+  # if enabled nodeExporter gives metrics of the underlying machine
+  nodeExporter:
+    enabled: false
+
+grafana:
+  service:
+    # ref: 💡 reff: https://grafana.com/docs/grafana-cloud/data-configuration/integrations/
+    type: NodePort

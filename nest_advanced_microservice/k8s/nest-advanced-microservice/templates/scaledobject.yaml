@@ -1,0 +1,34 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: nest-advanced-microservice
+  labels:
+    app: nest-advanced-microservice
+spec:
+  # reff: https://keda.sh/
+
+  # maximum number of pods that the system gets scaled to i.e bumped to in this horizontall scaler
+  maxReplicaCount: 5
+  # kubectl get scaledobject
+  minReplicaCount: 1
+
+  # in seconds how often keda is going to run the triggers that are specified here and checks wheather scaling is required
+  pollingInterval: 15
+
+  # name of the deployement that gets scaled up based on the triggers defined below
+  scaleTargetRef:
+    name: nest-advanced-microservice # shud be the same name mentioned in deployment.yaml
+  triggers:
+    # tells keda to scale on which event can be kafka topics, AWS resources in this case custom prometheus metrics reff: https://keda.sh/
+    # reff: https://keda.sh/docs/2.2/operate/prometheus/#mainnav
+    - type: prometheus
+      metadata:
+        # server address where promotheus will listen on identified inside k8 cluster via service name
+        serverAddress: http://nest-advanced-microservice-prometheus-server:80 # 🎈 to change
+        metricName: cpu_usage
+        # ✨ this query can be obtained via exploring the prometheus metrics in localhost dashboard of grafana nodePORT
+        # percentage of cpu that application is using via query over 2minute time interval with * 100 gives the percentage
+        # ✨ keda divides the query result percentage by number of running pods automatically to get true cpu usage per pod
+        query: sum(irate(process_cpu_seconds_total{app="nest-advanced-microservice"}[2m])) * 100
+        # specifies this trigger autohit threshold, once cpu usage reaches above 50 percent avg for the pods
+        threshold: '50'

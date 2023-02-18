@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nest-advanced-microservice
+  name: nest-advanced-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nest-advanced-microservice
+  template:
+    metadata:
+      labels:
+        app: nest-advanced-microservice
+      # 💡 tells prometheus to scrape this pod specific path /metrics that the nest application spits out
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: /metrics
+        prometheus.io/port: '3000'
+    spec:
+      containers:
+        # 🎈 replace the dockerUsername with your docker username
+        - image: dockerUsername/nest-advanced-microservice
+          name: nest-advanced-microservice
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred

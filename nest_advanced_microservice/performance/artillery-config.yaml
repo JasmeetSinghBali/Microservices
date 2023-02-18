@@ -1,0 +1,20 @@
+config:
+  # targets domain+host stress mock
+  # 🎈 make sure to change the port that is visible when you do kubectl get svc
+  target: 'http://localhost:3000'
+  # tells the load/payload config to hit the system with
+  phases:
+    # how long the stress test shud last in seconds?
+    - duration: 300
+      # number of concurrent request/users request mock that hit the system at once
+      arrivalRate: 10
+      # this will ramp up the concurrent requests from 10 to 100, overtime the request to the server will increase linearly
+      rampTo: 100
+
+# scenario key just a random name for this artillery config
+scenarios:
+  - name: 'Triggers the k8s autoscaler on hitting endpoint-url: / get hello'
+    flow:
+      # specifies the target endpoint to send the stress payload to
+      - get:
+          url: '/'
