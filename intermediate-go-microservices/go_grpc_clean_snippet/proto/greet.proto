@@ -1,0 +1,41 @@
+// ✨ the defination and interfaces for rpc for client and server goes here 
+// while the pb.go are generated automatically with this proto defination reff
+syntax="proto3";
+
+// generated .pv.go files will be stored under proto i.e current dir
+option go_package = "./proto";
+
+package greet_service;
+
+service GreetService{
+    // Unary i.e simple request-response
+    rpc SayHi(NoParams) returns (HiResponse);
+
+    // ServerStreaming
+    rpc SayHiServerStreaming(DonutsList) returns (stream HiResponse);
+
+    // ClientStreaming
+    rpc SayHiClientsStreaming(stream StreamingRequest) returns (MessagesList);
+
+    // BidirectionalStreaming
+    rpc SayHiBidirectionalStreaming(stream StreamingRequest) returns (stream HiResponse);
+}
+
+message NoParams{};
+
+message StreamingRequest{
+    string name = 1; 
+}
+
+message HiResponse{
+    string message = 1;
+}
+
+message DonutsList {
+    // ✨ The Protocol Buffers message specification uses the repeated keyword for declaring lists or arrays of messages within another message.
+    repeated string names =1;
+}
+
+message MessagesList {
+    repeated string messages = 1;
+}
